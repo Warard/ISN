@@ -35,6 +35,8 @@ while isPlaying:
             if event.key == pygame.K_SPACE:
                 print("je saute")
 
+    pipes = Pipes(pipe_img)
+    pipes.show(window)
 
     pygame.display.flip()
     print("ca tourne")

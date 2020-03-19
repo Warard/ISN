@@ -1,17 +1,20 @@
 import random
+import pygame
+from settings import settings
 
-class Pipe():
-    def __init__(self):
-        # random.randint(((settings['window_size'][1] / 100) * 20), ((settings['window_size'][1] / 100) * 80))
-        self.x = 50
-        self.y = 0
+class Pipes():
+    def __init__(self, pipe_img):
+        self.x = 400
+        self.y = random.randint(0, 150)
+        self.speed = 50
 
         
-        self.pipe_sup = pygame.transsform.flip(pipe_img)
+        self.pipe_sup = pygame.transform.flip(pipe_img, False, True)
         self.pipe_inf = pipe_img      
         
         
-    def show(self):
-        window.blit(self.pipe_sup, (self.x, self.y))
+    def show(self, window):
+        window.blit(self.pipe_sup, (self.x + self.speed, self.y-150))
+        window.blit(self.pipe_inf, (self.x + self.speed, self.y + settings['free_space_btw_pipes']))
         
       
