@@ -1,5 +1,6 @@
 import pygame
 from settings import settings
+from map import Pipes
 
 pygame.init()
 clock = pygame.time.Clock()

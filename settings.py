@@ -1,4 +1,4 @@
 settings = {
-    'window_size': (480, 640),
+    'window_size': (576, 624),
     'fps': (5)
 }
