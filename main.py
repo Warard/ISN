@@ -1,6 +1,7 @@
 import pygame
 from settings import settings
 from map import Pipes
+from map import Background
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -17,15 +18,13 @@ pipe_img = pygame.image.load('imgs/pipe.png')
 bird_img = pygame.image.load('imgs/bird1.png') 
 base_img = pygame.image.load('imgs/base.png') 
 
+background = Background(base_img, bg_img, window)
+pipes = Pipes(pipe_img)
+
 isPlaying = True
 
 while isPlaying:    
     clock.tick(settings['fps'])
-    
-    window.blit(bg_img, (0, 0))
-    window.blit(base_img, (0, 512))
-    window.blit(bg_img, (288, 0))
-    window.blit(base_img, (288, 512))
 
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -34,12 +33,25 @@ while isPlaying:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 print("je saute")
-
-    pipes = Pipes(pipe_img)
+    
+    background.draw_background()
+    
     pipes.show(window)
+    pipes.move()
+    
+    background.move_base()
+    background.draw_base()
 
+    if pipes.x <= -60:
+        #print('new pipes')
+        pipes = Pipes(pipe_img)
+        
+    if background.x <= -48:
+        #print('NEW BASE')
+        background = Background(base_img, bg_img, window)
+        
     pygame.display.flip()
-    print("ca tourne")
+    #print("ca tourne")
 
 pygame.quit()
 print("orvoar")
