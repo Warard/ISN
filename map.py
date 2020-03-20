@@ -25,16 +25,16 @@ class Background():
 class Pipes():
     def __init__(self, pipe_img):
         self.x = settings['window_size'][0] 
-        self.y = random.randint(0, 150)
+        self.y = random.randint(settings['min_random_y_pipe_spawn'], settings['max_random_y_pipe_spawn'])
         self.speed = settings['speed']
         
         self.pipe_sup = pygame.transform.flip(pipe_img, False, True)
         self.pipe_inf = pipe_img      
           
     def show(self, window):
-        window.blit(self.pipe_sup, (self.x + self.speed, self.y-150))
-        window.blit(self.pipe_inf, (self.x + self.speed, self.y + settings['free_space_btw_pipes']))
-        # print('showing new pipes in x= ', self.x, 'y=', self.y)
+        window.blit(self.pipe_sup, (self.x, self.y - settings['pipe_img_height']))
+        window.blit(self.pipe_inf, (self.x, self.y + settings['vertical_space_btw_pipes']))
+        print('showing new pipes in x= ', self.x, 'y=', self.y)
         
     def move(self):
         self.x -= self.speed
