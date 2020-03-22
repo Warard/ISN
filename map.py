@@ -33,13 +33,18 @@ class Pipes():
         self.y = random.randint(settings['min_random_y_pipe_spawn'], settings['max_random_y_pipe_spawn'])
         self.speed = settings['speed']
 
-        self.pipe_sup = pygame.transform.flip(pipe_img, False, True)
+        # Les variables qui doivent être importées d'autres fichiers sont stockées dans des variables, pour des soucis de performance
+        self.pipe_img_y_height = settings['pipe_img_y_height']
+        self.vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
+
+        # Le tuyau inférieur est celui que nous importons, le supérieur doit subir une rotation horizontale 
         self.pipe_inf = pipe_img
+        self.pipe_sup = pygame.transform.flip(pipe_img, False, True)
 
     # Affiche le tuyeau
     def show(self, window):
-        window.blit(self.pipe_sup, (self.x, self.y - settings['pipe_img_y_height']))
-        window.blit(self.pipe_inf, (self.x, self.y + settings['vertical_space_btw_pipes']))
+        window.blit(self.pipe_sup, (self.x, self.y - self.pipe_img_y_height))
+        window.blit(self.pipe_inf, (self.x, self.y + self.vertical_space_btw_pipes))
         # print('showing new pipes in x= ', self.x, 'y=', self.y)
 
     # Déplace le tuyeau
