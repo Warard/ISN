@@ -29,13 +29,15 @@ pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
 
+# On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
+keys = pygame.key.get_pressed()
+
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
     # Régulation du nombre de répétitions de la boucle par seconde
     clock.tick(settings['fps'])
 
     # Capture des boutons appuyés
-    keys = pygame.key.get_pressed()
     for event in pygame.event.get():
         # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
         if event.type == pygame.QUIT:

@@ -15,7 +15,6 @@ class Background():
     # Affiche le fond
     def draw_background(self):
         self.window.blit(self.bg_img, (0, 0))
-        self.window.blit(self.bg_img, (288, 0))
 
     # Affiche la base
     def draw_base(self):
