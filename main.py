@@ -82,16 +82,19 @@ while isPlaying:
     if pipes.x <= -pipe_img_x_height:
         otherPipePosition = pipes2.x
         # Recréation de l'objet tuyaux
+        del(pipes)
         pipes = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
     # Quand le second tuyeaux sort de la carte
     if pipes2.x <= -pipe_img_x_height:
         otherPipePosition = pipes.x
         # Recréation de l'objet tuyaux2
+        del(pipes2)
         pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
     # Si la base arrive à -48px (comme elle avance), il faut la redessiner à sa position initale ; permet d'avoir un défilement infinie de la base
     if background.x <= -48:
+        del(background)
         background = Background(base_img, bg_img, window)
 
     # Actualisation de l'affichage Pygame
