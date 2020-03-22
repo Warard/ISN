@@ -56,13 +56,13 @@ while isPlaying:
                 print("je saute")
             if event.key == pygame.K_RIGHT:
                 speed_multiplier += .1
-                print(round(speed_multiplier, 2))  # On est obligés de round() la valeur à cause des floating points
+                print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
             if event.key == pygame.K_LEFT:
                 speed_multiplier -= .1
-                print(round(speed_multiplier, 2))
+                print("speed multiplier:", round(speed_multiplier, 2), end="\r")
             if event.key == pygame.K_DOWN:
                 speed_multiplier = 1
-                print(round(speed_multiplier, 2))
+                print("speed multiplier:", round(speed_multiplier, 2), end="\r")
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
     background.draw_background()
