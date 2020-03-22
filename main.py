@@ -32,6 +32,7 @@ horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
 
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
+speed_multiplier = 1
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -39,7 +40,10 @@ keys = pygame.key.get_pressed()
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
     # Régulation du nombre de répétitions de la boucle par seconde
-    clock.tick(settings['fps'])
+    clock.tick(settings['fps'] * speed_multiplier)
+
+    if speed_multiplier <= 0.2:
+        speed_multiplier = 0.2
 
     # Capture des boutons appuyés
     for event in pygame.event.get():
@@ -50,6 +54,15 @@ while isPlaying:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 print("je saute")
+            if event.key == pygame.K_RIGHT:
+                speed_multiplier += .1
+                print(round(speed_multiplier, 2))  # On est obligés de round() la valeur à cause des floating points
+            if event.key == pygame.K_LEFT:
+                speed_multiplier -= .1
+                print(round(speed_multiplier, 2))
+            if event.key == pygame.K_DOWN:
+                speed_multiplier = 1
+                print(round(speed_multiplier, 2))
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
     background.draw_background()
