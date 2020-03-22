@@ -26,6 +26,10 @@ background = Background(base_img, bg_img, window)
 pipes = Pipes(pipe_img, settings['window_size'][0])
 pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
 
+# Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
+pipe_img_x_height = settings['pipe_img_x_height']
+horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
+
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
 
@@ -62,23 +66,23 @@ while isPlaying:
     background.draw_base()
 
     # Quand le premier tuyau sort de la carte:
-    if pipes.x <= -settings['pipe_img_x_height']:
+    if pipes.x <= -pipe_img_x_height:
         otherPipePosition = pipes2.x
         # Recréation de l'objet tuyaux
-        pipes = Pipes(pipe_img, otherPipePosition + settings['horizontal_space_btw_pipes'])
+        pipes = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
     # Quand le second tuyeaux sort de la carte
-    if pipes2.x <= -settings['pipe_img_x_height']:
+    if pipes2.x <= -pipe_img_x_height:
         otherPipePosition = pipes.x
         # Recréation de l'objet tuyaux2
-        pipes2 = Pipes(pipe_img, otherPipePosition + settings['horizontal_space_btw_pipes'])
+        pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
     # Si la base arrive à -48px (comme elle avance), il faut la redessiner à sa position initale ; permet d'avoir un défilement infinie de la base
     if background.x <= -48:
         background = Background(base_img, bg_img, window)
 
     # Actualisation de l'affichage Pygame
-    pygame.display.flip()
+    pygame.display.update()
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()

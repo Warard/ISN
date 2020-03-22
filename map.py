@@ -19,7 +19,6 @@ class Background():
     # Affiche la base
     def draw_base(self):
         self.window.blit(self.base_img, (self.x, 512))
-        self.window.blit(self.base_img, (self.x + 288, 512))
         # print('base  x position = ', self.x)
 
     # Déplace la base
