@@ -15,6 +15,10 @@ window = pygame.display.set_mode((settings['window_size'][0], settings['window_s
 # Titre de la fenêtre
 pygame.display.set_caption('I.A Flappy Bird')
 
+# On récupère une image et on l'affiche en en-tête de fenêtre
+icon = pygame.image.load('imgs/bird1.png')
+pygame.display.set_icon(icon)
+
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
 bg_img = pygame.image.load('imgs/bg.png')
 pipe_img = pygame.image.load('imgs/pipe.png')
@@ -54,6 +58,7 @@ while isPlaying:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 print("je saute")
+            # On peut contrôler avec les flèches la vitesse du jeu
             if event.key == pygame.K_RIGHT:
                 speed_multiplier += .1
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
@@ -61,7 +66,7 @@ while isPlaying:
                 speed_multiplier -= .1
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
             if event.key == pygame.K_DOWN:
-                speed_multiplier = 1
+                speed_multiplier = 1.0
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
