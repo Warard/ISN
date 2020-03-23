@@ -2,6 +2,7 @@ import pygame
 from settings import settings
 from map import Pipes
 from map import Background
+from bird import Bird
 
 # Initalisation du module Pygame
 pygame.init()
@@ -29,6 +30,7 @@ base_img = pygame.image.load('imgs/base.png')
 background = Background(base_img, bg_img, window)
 pipes = Pipes(pipe_img, settings['window_size'][0])
 pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
+bird = Bird(200, 200, window)
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -57,7 +59,7 @@ while isPlaying:
         # Si on appuie sur la touche espace, l'oiseau saute
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                print("je saute")
+                bird.jump()
             # On peut contrôler avec les flèches la vitesse du jeu
             if event.key == pygame.K_RIGHT:
                 speed_multiplier += .1
@@ -68,6 +70,7 @@ while isPlaying:
             if event.key == pygame.K_DOWN:
                 speed_multiplier = 1.0
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+            
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
     background.draw_background()
@@ -78,6 +81,8 @@ while isPlaying:
 
     pipes2.show(window)
     pipes2.move()
+
+    bird.show()
 
     # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
     background.move_base()
@@ -101,6 +106,9 @@ while isPlaying:
     if background.x <= -48:
         del(background)
         background = Background(base_img, bg_img, window)
+
+    if bird.y >= 400:
+        isPlaying = False 
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()

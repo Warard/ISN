@@ -1,25 +1,24 @@
 import pygame
 import settings
 
-class bird: 
-
-    image=pygame.image.load('imgs/bird1.png')
+class Bird(): 
 
 
-    def _init_(self, x, y):
+    def __init__(self, x, y, window):
         self.x = x
         self.y = y
-        self.tilt = 0
-        self.tick_count = 0
         self.velocity = 0
-        self.height = self.y
-        self.img_count = 0
-        self.img = self.image[0]
+        #changement d'image si battement d'aile self.img_count = 0
+        #self.img = self.image[0]
+        self.image = pygame.image.load('imgs/bird1.png')
+        self.window = window
+
+    def show(self):
+        self.window.blit(self.image,(self.x, self.y))
+        self.y += 5
 
     def jump(self):
-        self.velocity = -10
-        self.tick_count = 0
-        self.height = self.y
+        self.y -= 30
 
-   
+       
    
