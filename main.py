@@ -25,7 +25,7 @@ pipe_img = pygame.image.load('imgs/pipe.png')
 bird_img = pygame.image.load('imgs/bird1.png')
 base_img = pygame.image.load('imgs/base.png')
 
-# Création des objets tuyeaux et fond de carte depuis la class Map dans map.py
+# Création des objets tuyaux et fond de carte depuis la class Map dans map.py
 background = Background(base_img, bg_img, window)
 pipes = Pipes(pipe_img, settings['window_size'][0])
 pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
