@@ -6,6 +6,6 @@ settings = {
     'pipe_img_x_height': (52),
     'pipe_img_y_height': (515),
     'speed': (2),  # max = 2 (plus la valeur est basse, plus c'est fluide, mais plus ça prends des perfs')
-    'vertical_space_btw_pipes': (100),
+    'vertical_space_btw_pipes': (120),
     'window_size': (576, 624)  # base_size + bg_size
 }

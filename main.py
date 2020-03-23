@@ -61,7 +61,7 @@ while isPlaying:
             if event.key == pygame.K_SPACE:
                 bird.jump()
             # On peut contrôler avec les flèches la vitesse du jeu
-            if event.key == pygame.K_RIGHT: 
+            if event.key == pygame.K_RIGHT:
                 speed_multiplier += .1
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
             if event.key == pygame.K_LEFT:
@@ -70,12 +70,11 @@ while isPlaying:
             if event.key == pygame.K_DOWN:
                 speed_multiplier = 1.0
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
-            
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
-    background.draw_background()
+    background.draw_background() 
 
-    # Affichage et déplacements des tuyeaux grâce à l'appel de la méthode show et m ove de la class Pipes depuis map.py
+    # Affichage et déplacements des tuyeaux grâce à l'appel de la méthode show et move de la class Pipes depuis map.py
     pipes.show(window)
     pipes.move()
 
@@ -83,7 +82,7 @@ while isPlaying:
     pipes2.move()
 
     bird.show()
-
+ 
     # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
     background.move_base()
     background.draw_base()
@@ -107,7 +106,7 @@ while isPlaying:
         del(background)
         background = Background(base_img, bg_img, window)
 
-    if bird.y >= 512:
+    if bird.y >= 492:
         isPlaying = False 
 
     # Actualisation de l'affichage Pygame
@@ -117,4 +116,3 @@ while isPlaying:
 pygame.quit()
 print("orvaor :)")
 quit()
-
