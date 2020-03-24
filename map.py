@@ -11,7 +11,7 @@ class Background():
     - move_base
     """
     # Caractéristiques du futur objet
-    def __init__(self, base_img, bg_img, window, x=0):
+    def __init__(self, bg_img, window):
         """
         La méthode __init__ définie différentes variables:
         - x: la position horizontale du sol (utile pour le déffilement)
@@ -22,8 +22,7 @@ class Background():
         - speed: la vitesse à laquelle notre sol défille
         """
         self.x = 0
-        self.x_background = 0
-        self.base_img = base_img
+        self.x = 0
         self.bg_img = bg_img
         self.window = window
         self.speed = settings['speed']
@@ -31,13 +30,31 @@ class Background():
     # Affiche le fond
     def draw_background(self):
         """La méthode draw_background permet d'afficher l'image de fond"""
-        self.window.blit(self.bg_img, (self.x_background, 0))
+        self.window.blit(self.bg_img, (self.x, 0))
 
     # Déplace le fond
     def move_background(self):
         """La méthode move_background permet de faire déffiler l'image de fond"""
-        self.x_background -= self.speed
+        self.x -= 0.1 * self.speed
 
+        
+class Base():
+    def __init__(self, base_img, window):
+        """
+        La méthode __init__ définie différentes variables:
+        - x: la position horizontale du sol (utile pour le déffilement)
+        - x_background: la position horizontale du fond de l'écran
+        - base_img: l'image du sol
+        - bg_img: l'image de fond
+        - window: la fenêtre ou on doit afficher nos éléments
+        - speed: la vitesse à laquelle notre sol défille
+        """
+        self.x = 0
+        self.base_img = base_img
+        self.window = window
+        self.speed = settings['speed']
+        
+        
     # Affiche la base
     def draw_base(self):
         """La méthode draw_base permet d'afficher l'image de sol"""
@@ -48,6 +65,8 @@ class Background():
     def move_base(self):
         """La méthode move_base permet de déplacer vers la gauche le sol à la même vitesse que les tuyaux"""
         self.x -= self.speed
+        
+        
 
 
 class Pipes():

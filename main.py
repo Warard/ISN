@@ -2,6 +2,7 @@ import pygame
 from settings import settings
 from map import Pipes
 from map import Background
+from map import Base
 from bird import Bird
 
 # Initalisation du module Pygame
@@ -27,7 +28,8 @@ bird_img = pygame.image.load('imgs/bird1.png')
 base_img = pygame.image.load('imgs/base.png')
 
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
-background = Background(base_img, bg_img, window)
+background = Background(bg_img, window)
+base = Base(base_img, window)
 pipes = Pipes(pipe_img, settings['window_size'][0])
 pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
 bird = Bird(200, 200, window)
@@ -85,8 +87,8 @@ while isPlaying:
     bird.show()
  
     # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
-    background.move_base()
-    background.draw_base()
+    base.move_base()
+    base.draw_base()
 
     # Quand le premier tuyau sort de la carte:
     if pipes.x <= -pipe_img_x_height:
@@ -103,9 +105,15 @@ while isPlaying:
         pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
     # Si la base arrive à -48px (comme elle recule), il faut la redessiner à sa position initiale ; permet d'avoir un défilement infinie de la base
-    if background.x <= -48:
+    if base.x <= -48:
+        del(base)
+        print('new base')
+        base = Base(base_img, window)
+        
+    if background.x <= -138:
         del(background)
-        background = Background(base_img, bg_img, window)
+        print('new background')
+        background = Background(bg_img, window)
 
     if bird.y >= 492:
         isPlaying = False 
