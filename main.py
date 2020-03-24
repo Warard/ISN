@@ -22,7 +22,7 @@ icon = pygame.image.load('imgs/bird1.png')
 pygame.display.set_icon(icon)
 
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
-bg_img = pygame.image.load('imgs/bg.png')
+bg_img = pygame.image.load('imgs/bg2.png')
 pipe_img = pygame.image.load('imgs/pipe.png')
 bird_img = pygame.image.load('imgs/bird1.png')
 base_img = pygame.image.load('imgs/base.png')
@@ -110,13 +110,15 @@ while isPlaying:
         print('new base')
         base = Base(base_img, window)
         
-    if background.x <= -138:
+    if background.x <= -350:
         del(background)
         print('new background')
         background = Background(bg_img, window)
 
     if bird.y >= 492:
         isPlaying = False 
+
+    print(background.x)
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()
