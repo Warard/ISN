@@ -72,7 +72,8 @@ while isPlaying:
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
 
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
-    background.draw_background() 
+    background.draw_background()
+    background.move_background()
 
     # Affichage et déplacements des tuyeaux grâce à l'appel de la méthode show et move de la class Pipes depuis map.py
     pipes.show(window)
@@ -101,7 +102,7 @@ while isPlaying:
         del(pipes2)
         pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
-    # Si la base arrive à -48px (comme elle avance), il faut la redessiner à sa position initale ; permet d'avoir un défilement infinie de la base
+    # Si la base arrive à -48px (comme elle recule), il faut la redessiner à sa position initiale ; permet d'avoir un défilement infinie de la base
     if background.x <= -48:
         del(background)
         background = Background(base_img, bg_img, window)

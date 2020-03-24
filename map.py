@@ -15,12 +15,14 @@ class Background():
         """
         La méthode __init__ définie différentes variables:
         - x: la position horizontale du sol (utile pour le déffilement)
+        - x_background: la position horizontale du fond de l'écran
         - base_img: l'image du sol
         - bg_img: l'image de fond
         - window: la fenêtre ou on doit afficher nos éléments
         - speed: la vitesse à laquelle notre sol défille
         """
         self.x = 0
+        self.x_background = 0
         self.base_img = base_img
         self.bg_img = bg_img
         self.window = window
@@ -29,7 +31,12 @@ class Background():
     # Affiche le fond
     def draw_background(self):
         """La méthode draw_background permet d'afficher l'image de fond"""
-        self.window.blit(self.bg_img, (0, 0))
+        self.window.blit(self.bg_img, (self.x_background, 0))
+
+    # Déplace le fond
+    def move_background(self):
+        """La méthode move_background permet de faire déffiler l'image de fond"""
+        self.x_background -= self.speed
 
     # Affiche la base
     def draw_base(self):
@@ -39,7 +46,7 @@ class Background():
 
     # Déplace la base
     def move_base(self):
-        """la méthode move_base permet de déplacer vers la gauche le sol à la même vitesse que les tuyaux"""
+        """La méthode move_base permet de déplacer vers la gauche le sol à la même vitesse que les tuyaux"""
         self.x -= self.speed
 
 
