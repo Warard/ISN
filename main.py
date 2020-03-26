@@ -48,6 +48,7 @@ while isPlaying:
     # Régulation du nombre de répétitions de la boucle par seconde
     clock.tick(settings['fps'] * speed_multiplier)
 
+    # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
     if speed_multiplier <= 0.2:
         speed_multiplier = 0.2
 
@@ -107,16 +108,20 @@ while isPlaying:
         del(base)
         # print('new base')
         base = Base(base_img, window)
-        
+
+    # Si le fond est trop à gauche, alors on le supprime et on en recréer un    
     if background.x <= -350:
         del(background)
         # print('new background')
         background = Background(bg_img, window)
 
+    # Si l'oiseau touche le sol, on perd
     if bird.y >= 492:
         isPlaying = False 
 
-    # print(background.x)
+    # Si l'oiseau n'est pas en saut, il subit la force de gravité
+    if bird.isJumping == False:
+        bird.y += bird.velocity
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()

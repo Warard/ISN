@@ -11,7 +11,7 @@ class Bird():
         self.window = window
 
         # Caractéristiques de l'oiseau
-        self.isJumping = 0
+        self.isJumping = False
         self.velocity = 5
         self.mass = 2
 
@@ -38,4 +38,4 @@ class Bird():
         self.window.blit(self.image,(self.x, self.y))
 
     def jump(self):
-        self.isJumping = 1
+        self.isJumping = True
