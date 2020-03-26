@@ -1,8 +1,6 @@
 import pygame
 from settings import settings
-from map import Pipes
-from map import Background
-from map import Base
+from map import Pipes, Background, Base
 from bird import Bird
 
 # Initalisation du module Pygame
