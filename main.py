@@ -22,10 +22,10 @@ icon = pygame.image.load('imgs/bird1.png')
 pygame.display.set_icon(icon)
 
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
-bg_img = pygame.image.load('imgs/bg2.png')
-pipe_img = pygame.image.load('imgs/pipe.png')
-bird_img = pygame.image.load('imgs/bird1.png')
-base_img = pygame.image.load('imgs/base.png')
+bg_img = pygame.image.load('imgs/bg2.png').convert_alpha()
+pipe_img = pygame.image.load('imgs/pipe.png').convert_alpha()
+bird_img = pygame.image.load('imgs/bird1.png').convert_alpha()
+base_img = pygame.image.load('imgs/base.png').convert_alpha()
 
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
 background = Background(bg_img, window)
@@ -107,18 +107,18 @@ while isPlaying:
     # Si la base arrive à -48px (comme elle recule), il faut la redessiner à sa position initiale ; permet d'avoir un défilement infinie de la base
     if base.x <= -48:
         del(base)
-        print('new base')
+        # print('new base')
         base = Base(base_img, window)
         
     if background.x <= -350:
         del(background)
-        print('new background')
+        # print('new background')
         background = Background(bg_img, window)
 
     if bird.y >= 492:
         isPlaying = False 
 
-    print(background.x)
+    # print(background.x)
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()
