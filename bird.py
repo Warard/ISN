@@ -14,6 +14,7 @@ class Bird():
         self.isJumping = False
         self.velocity = 5
         self.mass = 2
+        
 
     def show(self):
         if self.isJumping:
@@ -39,3 +40,13 @@ class Bird():
 
     def jump(self):
         self.isJumping = True
+        
+    def get_mask(self):
+        """
+        gets the mask for the current image of the bird
+        :return: None
+        """
+        return pygame.mask.from_surface(self.image)
+        
+
+

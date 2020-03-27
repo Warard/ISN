@@ -97,6 +97,9 @@ class Pipes():
         # Le tuyau inférieur est celui que nous importons, le supérieur doit subir une rotation horizontale
         self.pipe_inf = pipe_img
         self.pipe_sup = pygame.transform.flip(pipe_img, False, True)
+        self.PIPE_BOTTOM = pipe_img
+        self.top = 0
+        self.bottom = 0
 
     # Affiche le tuyeau
     def show(self, window):
@@ -110,3 +113,22 @@ class Pipes():
         """La méthode move de la classe Pipes permet de déplacer vers la gauche les deux parties du tuyau"""
         self.x -= self.speed
         # print('Pipes in movements !')
+        
+    def collide(self, bird, win):
+        """
+        returns if a point is colliding with the pipe
+        :param bird: Bird object
+        :return: Bool
+        """
+        bird_mask = bird.get_mask()
+        mask_pipe_sup = pygame.mask.from_surface(self.pipe_sup)
+        mask_pipe_bottom = pygame.mask.from_surface(self.pipe_inf)
+        top_offset = (self.x - bird.x, self.top - round(bird.y))
+        bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
+
+        b_point = bird_mask.overlap(mask_pipe_bottom, bottom_offset)
+        t_point = bird_mask.overlap(mask_pipe_sup,top_offset)
+
+        if b_point or t_point:
+            return True
+        return False

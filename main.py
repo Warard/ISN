@@ -6,6 +6,8 @@ from bird import Bird
 # Initalisation du module Pygame
 pygame.init()
 
+collision = True
+
 # Variable qui va permettre de réguler les FPS
 clock = pygame.time.Clock()
 
@@ -35,6 +37,7 @@ bird = Bird(200, 200, window)
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
 horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
+vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
@@ -46,9 +49,12 @@ def display_text(x, y, text, color):
     message=font.render(text, True, color)
     window.blit(message, [x,y])
     color=(0,0,0)
+    
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
+
+score = 0
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
@@ -129,13 +135,26 @@ while isPlaying:
         isPlaying = False 
 
     # Si l'oiseau n'est pas en saut, il subit la force de gravité
-    if bird.isJumping == False:
-        bird.y += bird.velocity
+    #if bird.isJumping == False:
+        #bird.y += bird.velocity
 
-    display_text(260, 30, "00", (0,0,0))
+    #collision 
+    if collision:
+        if pipes.collide(bird, window) == True:
+            if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes) or bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
+                print('collision')
+        else:
+            if bird.x == pipes.x or bird.x == pipes2.x:
+                score += 1
+         
+    #affiche le score
+    display_text(260, 30, str(score), (0,0,0))
+       
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()
+    
+        
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()
