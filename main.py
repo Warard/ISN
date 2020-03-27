@@ -40,6 +40,14 @@ horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
 isPlaying = True
 speed_multiplier = 1
 
+font=pygame.font.Font("flappy-bird-font.ttf", 40)
+
+def afficher(x, y, text, color):
+    message=font.render(text, True, color)
+    window.blit(message, [x,y])
+    color=(42,124,21)
+
+
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
 
@@ -48,7 +56,7 @@ while isPlaying:
     # Régulation du nombre de répétitions de la boucle par seconde
     clock.tick(settings['fps'] * speed_multiplier)
 
-    # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
+        # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
     if speed_multiplier <= 0.2:
         speed_multiplier = 0.2
 
@@ -72,6 +80,8 @@ while isPlaying:
                 speed_multiplier = 1.0
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
 
+    
+   
     # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
     background.draw_background()
     background.move_background()
@@ -122,6 +132,8 @@ while isPlaying:
     # Si l'oiseau n'est pas en saut, il subit la force de gravité
     if bird.isJumping == False:
         bird.y += bird.velocity
+
+    afficher(20, 20, "0132664", (42, 124, 21))
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()
