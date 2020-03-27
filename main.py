@@ -49,7 +49,7 @@ def display_text(x, y, text, color):
     message=font.render(text, True, color)
     window.blit(message, [x,y])
     color=(0,0,0)
-    
+
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -146,6 +146,23 @@ while isPlaying:
         else:
             if bird.x == pipes.x or bird.x == pipes2.x:
                 score += 1
+
+    '''
+    VERSION BEUGUÉE
+    
+    
+    if collision:
+            if pipes.collide(bird, window) == True:
+                print('collision')
+            else:
+                if bird.x == pipes.x or bird.x == pipes2.x:
+                    score += 1              
+    '''
+    
+    #COLLISION NV VERSION
+    if bird.is_collided(pipes.pipe_sup) or bird.is_collided(pipes.pipe_inf):
+        print(bird.is_collided(pipes.pipe_sup))       
+         
          
     #affiche le score
     display_text(260, 30, str(score), (0,0,0))

@@ -14,6 +14,7 @@ class Bird():
         self.isJumping = False
         self.velocity = 5
         self.mass = 2
+        self.rect = self.image.get_rect()
         
 
     def show(self):
@@ -47,6 +48,10 @@ class Bird():
         :return: None
         """
         return pygame.mask.from_surface(self.image)
+    
+    
+    def is_collided(self, tuyau):
+        return self.rect.colliderect(tuyau.get_rect())
         
 
 
