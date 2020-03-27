@@ -40,13 +40,12 @@ horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
 isPlaying = True
 speed_multiplier = 1
 
-font=pygame.font.Font("flappy-bird-font.ttf", 40)
+font=pygame.font.Font("flappy-bird-font.ttf", 50)
 
-def afficher(x, y, text, color):
+def display_text(x, y, text, color):
     message=font.render(text, True, color)
     window.blit(message, [x,y])
-    color=(42,124,21)
-
+    color=(0,0,0)
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -133,7 +132,7 @@ while isPlaying:
     if bird.isJumping == False:
         bird.y += bird.velocity
 
-    afficher(20, 20, "0132664", (42, 124, 21))
+    display_text(260, 30, "00", (0,0,0))
 
     # Actualisation de l'affichage Pygame
     pygame.display.update()
