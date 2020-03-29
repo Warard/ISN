@@ -139,43 +139,31 @@ while isPlaying:
     if bird.y >= 492:
         isPlaying = False 
 
+    # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
+    #if bird.isJumping == False:
+        #bird.y += bird.velocity
 
-    '''
-    # Si l'oiseau n'est pas en saut, il subit la force de gravité
-    if bird.isJumping == False:
-        bird.y += bird.velocity
-    '''
-
-    #collision
+    #COLLISION
     if collision:
         #tuyau 1
         if pipes.collide(bird, window) == True:
+            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
                print('Collision 1 détéctée', random.randint(0, 99))   
         else:
-            if bird.x == pipes.x:      
+            if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
                 score += 1     
+                print('score : ', score)
                
         #uyeau 2  
         if pipes2.collide(bird, window) == True:
+            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
                 print('Collision 2 détéctée', random.randint(0, 99))
         else:
-             if bird.x == pipes2.x:
-                    score += 1
-            
-     
-        
-           
-
-    
-    '''
-    COLLISION NV VERSION
-    if bird.is_collided(pipes.pipe_sup) or bird.is_collided(pipes.pipe_inf):
-        print(bird.is_collided(pipes.pipe_sup))  
-        print(bird.is_collided(pipes.pipe_inf)) 
-    '''
-         
+            if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
+                score += 1
+                print('score : ', score)         
          
     #affiche le score
     display_text(260, 30, str(score), (0,0,0))
