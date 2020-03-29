@@ -2,6 +2,8 @@ import pygame
 from settings import settings
 from map import Pipes, Background, Base
 from bird import Bird
+import random
+
 
 # Initalisation du module Pygame
 pygame.init()
@@ -82,8 +84,11 @@ while isPlaying:
                 speed_multiplier -= .1
                 print("speed multiplier:", round(speed_multiplier, 2), end="\r")
             if event.key == pygame.K_DOWN:
-                speed_multiplier = 1.0
-                print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                #speed_multiplier = 1.0
+                #print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                bird.y += 10
+            if event.key == pygame.K_UP:
+                bird.y -= 10
 
     
    
@@ -134,34 +139,42 @@ while isPlaying:
     if bird.y >= 492:
         isPlaying = False 
 
+
+    '''
     # Si l'oiseau n'est pas en saut, il subit la force de gravité
-    #if bird.isJumping == False:
-        #bird.y += bird.velocity
+    if bird.isJumping == False:
+        bird.y += bird.velocity
+    '''
 
-    #collision 
+    #collision
     if collision:
+        #tuyau 1
         if pipes.collide(bird, window) == True:
-            if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes) or bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
-                print('collision')
+            if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
+               print('Collision 1 détéctée', random.randint(0, 99))   
         else:
-            if bird.x == pipes.x or bird.x == pipes2.x:
-                score += 1
+            if bird.x == pipes.x:      
+                score += 1     
+               
+        #uyeau 2  
+        if pipes2.collide(bird, window) == True:
+            if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
+                print('Collision 2 détéctée', random.randint(0, 99))
+        else:
+             if bird.x == pipes2.x:
+                    score += 1
+            
+     
+        
+           
 
+    
     '''
-    VERSION BEUGUÉE
-    
-    
-    if collision:
-            if pipes.collide(bird, window) == True:
-                print('collision')
-            else:
-                if bird.x == pipes.x or bird.x == pipes2.x:
-                    score += 1              
-    '''
-    
-    #COLLISION NV VERSION
+    COLLISION NV VERSION
     if bird.is_collided(pipes.pipe_sup) or bird.is_collided(pipes.pipe_inf):
-        print(bird.is_collided(pipes.pipe_sup))       
+        print(bird.is_collided(pipes.pipe_sup))  
+        print(bird.is_collided(pipes.pipe_inf)) 
+    '''
          
          
     #affiche le score

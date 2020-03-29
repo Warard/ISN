@@ -52,6 +52,6 @@ class Bird():
     
     def is_collided(self, tuyau):
         return self.rect.colliderect(tuyau.get_rect())
-        
+
 
 
