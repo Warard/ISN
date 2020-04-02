@@ -45,13 +45,12 @@ vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 isPlaying = True
 speed_multiplier = 1
 
-font=pygame.font.Font("flappy-bird-font.ttf", 50)
+# Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet
+font = pygame.font.Font("flappy-bird-font.ttf", 50)
 
-def display_text(x, y, text, color):
-    message=font.render(text, True, color)
+def displayText(x, y, text, color = (255, 255, 255)):
+    message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
     window.blit(message, [x,y])
-    color=(0,0,0)
-
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -165,8 +164,8 @@ while isPlaying:
                 score += 1
                 print('score : ', score)         
          
-    #affiche le score
-    display_text(260, 30, str(score), (0,0,0))
+    # Affiche le score
+    displayText(260, 30, str(score))
        
 
     # Actualisation de l'affichage Pygame
