@@ -15,21 +15,21 @@ class Bird():
         self.velocity = 5
         self.mass = 2
         self.rect = self.image.get_rect()
-        
+        self.F = 0
 
     def show(self):
-        if self.isJumping:
+        if self.isJumping == True:
             # On calcule la force F, F = 0.5 * masse * vitesse^2
-            F = 0.5 * self.mass * (self.velocity ** 2)
-
+            self.F = 0.5 * self.mass * (self.velocity ** 2)
+ 
             # On applique à la hauteur la force F et on ralentit la vitesse durant la montée
-            self.y -= F
+            self.y -= self.F
             self.velocity = self.velocity - 1
-
+ 
             # Si la vitesse atteint son maximum, on inverse la masse pour commencer à descendre
             if self.velocity < 0:
                 self.mass = -2
-
+ 
             # Si la vitesse revient à son état original-1 (car on enlève 1 à chaque itération), alors on ré-initialise les variables
             if self.velocity == -6:
                 self.isJumping = False
@@ -40,16 +40,20 @@ class Bird():
         self.window.blit(self.image,(self.x, self.y))
 
     def jump(self):
-        self.isJumping = True
-        
+        if self.isJumping == False:
+            self.isJumping = True
+        elif self.isJumping == True:
+            self.isJumping = False
+            self.velocity = 5
+            self.mass = 2
+
     def get_mask(self):
         """
         gets the mask for the current image of the bird
         :return: None
         """
         return pygame.mask.from_surface(self.image)
-    
-    
+
     def is_collided(self, tuyau):
         return self.rect.colliderect(tuyau.get_rect())
 

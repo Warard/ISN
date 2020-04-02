@@ -139,8 +139,8 @@ while isPlaying:
         isPlaying = False 
 
     # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
-    #if bird.isJumping == False:
-        #bird.y += bird.velocity
+    if bird.isJumping == False:
+        bird.y += bird.velocity
 
     #COLLISION
     if collision:
