@@ -44,6 +44,7 @@ vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
 speed_multiplier = 1
+menu = True 
 
 # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet
 font = pygame.font.Font("flappy-bird-font.ttf", 50)
@@ -59,118 +60,131 @@ score = 0
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
-    # Régulation du nombre de répétitions de la boucle par seconde
-    clock.tick(settings['fps'] * speed_multiplier)
+    if menu == True:
+        background.show() 
+        base.show()
+        for event in pygame.event.get():
+            # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
+            if event.type == pygame.QUIT:
+                isPlaying = False
+            # Si on appuie sur la touche espace, l'oiseau saute
+            if event.type == pygame.KEYDOWN:
+                menu = False
+    else: 
+        # Régulation du nombre de répétitions de la boucle par seconde
+        clock.tick(settings['fps'] * speed_multiplier)
 
-        # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
-    if speed_multiplier <= 0.2:
-        speed_multiplier = 0.2
+            # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
+        if speed_multiplier <= 0.2:
+            speed_multiplier = 0.2
 
-    # Capture des boutons appuyés
-    for event in pygame.event.get():
-        # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
-        if event.type == pygame.QUIT:
-            isPlaying = False
-        # Si on appuie sur la touche espace, l'oiseau saute
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                bird.jump()
-            # On peut contrôler avec les flèches la vitesse du jeu
-            if event.key == pygame.K_RIGHT:
-                speed_multiplier += .1
-                print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
-            if event.key == pygame.K_LEFT:
-                speed_multiplier -= .1
-                print("speed multiplier:", round(speed_multiplier, 2), end="\r")
-            if event.key == pygame.K_DOWN:
-                #speed_multiplier = 1.0
-                #print("speed multiplier:", round(speed_multiplier, 2), end="\r")
-                bird.y += 10
-            if event.key == pygame.K_UP:
-                bird.y -= 10
+        # Capture des boutons appuyés
+        for event in pygame.event.get():
+            # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
+            if event.type == pygame.QUIT:
+                isPlaying = False
+            # Si on appuie sur la touche espace, l'oiseau saute
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    bird.jump()
+                # On peut contrôler avec les flèches la vitesse du jeu
+                if event.key == pygame.K_RIGHT:
+                    speed_multiplier += .1
+                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
+                if event.key == pygame.K_LEFT:
+                    speed_multiplier -= .1
+                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                if event.key == pygame.K_DOWN:
+                    #speed_multiplier = 1.0
+                    #print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                    bird.y += 10
+                if event.key == pygame.K_UP:
+                    bird.y -= 10
 
+        
     
-   
-    # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
-    background.draw_background()
-    background.move_background()
+        # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
+        background.draw_background()
+        background.move_background()
 
-    # Affichage et déplacements des tuyeaux grâce à l'appel de la méthode show et move de la class Pipes depuis map.py
-    pipes.show(window)
-    pipes.move()
+        # Affichage et déplacements des tuyeaux grâce à l'appel de la méthode show et move de la class Pipes depuis map.py
+        pipes.show(window)
+        pipes.move()
 
-    pipes2.show(window)
-    pipes2.move()
+        pipes2.show(window)
+        pipes2.move()
 
-    bird.show()
- 
-    # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
-    base.move_base()
-    base.draw_base()
+        bird.show()
+    
+        # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
+        base.move_base()
+        base.draw_base()
 
-    # Quand le premier tuyau sort de la carte:
-    if pipes.x <= -pipe_img_x_height:
-        otherPipePosition = pipes2.x
-        # Recréation de l'objet tuyaux
-        del(pipes)
-        pipes = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
+        # Quand le premier tuyau sort de la carte:
+        if pipes.x <= -pipe_img_x_height:
+            otherPipePosition = pipes2.x
+            # Recréation de l'objet tuyaux
+            del(pipes)
+            pipes = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
-    # Quand le second tuyeaux sort de la carte
-    if pipes2.x <= -pipe_img_x_height:
-        otherPipePosition = pipes.x
-        # Recréation de l'objet tuyaux2
-        del(pipes2)
-        pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
+        # Quand le second tuyeaux sort de la carte
+        if pipes2.x <= -pipe_img_x_height:
+            otherPipePosition = pipes.x
+            # Recréation de l'objet tuyaux2
+            del(pipes2)
+            pipes2 = Pipes(pipe_img, otherPipePosition + horizontal_space_btw_pipes)
 
-    # Si la base arrive à -48px (comme elle recule), il faut la redessiner à sa position initiale ; permet d'avoir un défilement infinie de la base
-    if base.x <= -48:
-        del(base)
-        # print('new base')
-        base = Base(base_img, window)
+        # Si la base arrive à -48px (comme elle recule), il faut la redessiner à sa position initiale ; permet d'avoir un défilement infinie de la base
+        if base.x <= -48:
+            del(base)
+            # print('new base')
+            base = Base(base_img, window)
 
-    # Si le fond est trop à gauche, alors on le supprime et on en recréer un    
-    if background.x <= -350:
-        del(background)
-        # print('new background')
-        background = Background(bg_img, window)
+        # Si le fond est trop à gauche, alors on le supprime et on en recréer un    
+        if background.x <= -350:
+            del(background)
+            # print('new background')
+            background = Background(bg_img, window)
 
-    # Si l'oiseau touche le sol, on perd
-    if bird.y >= 492:
-        isPlaying = False 
+        # Si l'oiseau touche le sol, on perd
+        if bird.y >= 492:
+            isPlaying = False 
 
-    # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
-    if bird.isJumping == False:
-        bird.y += bird.velocity
+        # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
+        if bird.isJumping == False:
+            bird.y += bird.velocity
 
-    #COLLISION
-    if collision:
-        #tuyau 1
-        if pipes.collide(bird, window) == True:
-            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
-            if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
-               print('Collision 1 détéctée', random.randint(0, 99))   
-        else:
-            if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
-                score += 1     
-                print('score : ', score)
-               
-        #uyeau 2  
-        if pipes2.collide(bird, window) == True:
-            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
-            if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
-                print('Collision 2 détéctée', random.randint(0, 99))
-        else:
-            if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
-                score += 1
-                print('score : ', score)         
+        #COLLISION
+        if collision:
+            #tuyau 1
+            if pipes.collide(bird, window) == True:
+                #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+                if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
+                print('Collision 1 détéctée', random.randint(0, 99))   
+            else:
+                if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
+                    score += 1     
+                    print('score : ', score)
+                
+            #uyeau 2  
+            if pipes2.collide(bird, window) == True:
+                #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+                if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
+                    print('Collision 2 détéctée', random.randint(0, 99))
+            else:
+                if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
+                    score += 1
+                    print('score : ', score)         
          
-    # Affiche le score
-    displayText(260, 30, str(score))
-       
 
-    # Actualisation de l'affichage Pygame
-    pygame.display.update()
-    
+
+        # Affiche le score
+        displayText(260, 30, str(score))
+        
+
+        # Actualisation de l'affichage Pygame
+        pygame.display.update()
+        
         
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
