@@ -49,20 +49,31 @@ menu = True
 # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet
 font = pygame.font.Font("flappy-bird-font.ttf", 50)
 
-def displayText(x, y, text, color = (255, 255, 255)):
+def displayNumber(x, y, text, color = (255, 255, 255)):
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
     window.blit(message, [x,y])
+
+
+def displayText(x, y, text, color = (255, 255, 255)):
+    font = pygame.font.SysFont("comicsansms", 20)
+    message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
+    window.blit(message, [x,y])
+
 
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
 
 score = 0
 
+regle = "règles: - Il faut que l'oiseau passe entre les tuyaux"
+regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
+regle3 = "- A chaque tuyaux passé, +1 point"
+
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
     if menu == True:
-        background.show() 
-        base.show()
+        background.draw_background() 
+        base.draw_base()
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
             if event.type == pygame.QUIT:
@@ -70,6 +81,13 @@ while isPlaying:
             # Si on appuie sur la touche espace, l'oiseau saute
             if event.type == pygame.KEYDOWN:
                 menu = False
+        displayText(50, 100, regle)
+        displayText(120, 150, regle2)
+        displayText(120, 200, regle3)
+              
+        # Actualisation de l'affichage Pygame
+        pygame.display.update()
+
     else: 
         # Régulation du nombre de répétitions de la boucle par seconde
         clock.tick(settings['fps'] * speed_multiplier)
@@ -160,7 +178,7 @@ while isPlaying:
             if pipes.collide(bird, window) == True:
                 #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
                 if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
-                print('Collision 1 détéctée', random.randint(0, 99))   
+                    print('Collision 1 détéctée', random.randint(0, 99))   
             else:
                 if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
                     score += 1     
@@ -179,7 +197,7 @@ while isPlaying:
 
 
         # Affiche le score
-        displayText(260, 30, str(score))
+        displayNumber(260, 30, str(score))
         
 
         # Actualisation de l'affichage Pygame
