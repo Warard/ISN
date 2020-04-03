@@ -45,17 +45,17 @@ vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 isPlaying = True
 speed_multiplier = 1
 menu = True 
-
-# Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet
-font = pygame.font.Font("flappy-bird-font.ttf", 50)
+score = 0
 
 def displayNumber(x, y, text, color = (255, 255, 255)):
+    # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet    
+    font = pygame.font.Font("flappy-bird-font.ttf", 50)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
     window.blit(message, [x,y])
 
 
-def displayText(x, y, text, color = (255, 255, 255)):
-    font = pygame.font.SysFont("comicsansms", 20)
+def displayText(x, y, text, font_size, color = (255, 255, 255)):
+    font = pygame.font.SysFont("comicsansms", font_size)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
     window.blit(message, [x,y])
 
@@ -63,36 +63,41 @@ def displayText(x, y, text, color = (255, 255, 255)):
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
 
-score = 0
-
-regle = "règles: - Il faut que l'oiseau passe entre les tuyaux"
+titre = "Flappy Bird"
+regle = "Règles: - Il faut que l'oiseau passe entre les tuyaux"
 regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
 regle3 = "- A chaque tuyaux passé, +1 point"
+regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
     if menu == True:
+        #Affichage du menu d'accueil
         background.draw_background() 
         base.draw_base()
+        displayText(175, 25, titre, 40)
+        displayText(30, 130, regle, 20)
+        displayText(100, 180, regle2, 20)
+        displayText(100, 230, regle3, 20)
+        displayText(100, 280, regle4, 20)
+            
+        #Récupération des touches préssées et événements         
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
             if event.type == pygame.QUIT:
                 isPlaying = False
-            # Si on appuie sur la touche espace, l'oiseau saute
+            # Si on appuie sur la touche espace, le menu s'efface et le jeu commence
             if event.type == pygame.KEYDOWN:
-                menu = False
-        displayText(50, 100, regle)
-        displayText(120, 150, regle2)
-        displayText(120, 200, regle3)
-              
+                if event.key == pygame.K_SPACE:
+                    menu = False
+                    
         # Actualisation de l'affichage Pygame
         pygame.display.update()
-
     else: 
         # Régulation du nombre de répétitions de la boucle par seconde
         clock.tick(settings['fps'] * speed_multiplier)
 
-            # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
+        # On empêche le multiplicateur de descendre trop bas, car un nombre d'IPS ne peut pas être négatif
         if speed_multiplier <= 0.2:
             speed_multiplier = 0.2
 
@@ -102,7 +107,7 @@ while isPlaying:
             if event.type == pygame.QUIT:
                 isPlaying = False
             # Si on appuie sur la touche espace, l'oiseau saute
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:           
                 if event.key == pygame.K_SPACE:
                     bird.jump()
                 # On peut contrôler avec les flèches la vitesse du jeu
@@ -117,9 +122,7 @@ while isPlaying:
                     #print("speed multiplier:", round(speed_multiplier, 2), end="\r")
                     bird.y += 10
                 if event.key == pygame.K_UP:
-                    bird.y -= 10
-
-        
+                    bird.y -= 10      
     
         # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
         background.draw_background()
@@ -193,17 +196,12 @@ while isPlaying:
                 if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
                     score += 1
                     print('score : ', score)         
-         
-
 
         # Affiche le score
-        displayNumber(260, 30, str(score))
-        
+        displayNumber(260, 30, str(score))      
 
         # Actualisation de l'affichage Pygame
-        pygame.display.update()
-        
-        
+        pygame.display.update()      
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()
