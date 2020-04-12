@@ -109,7 +109,11 @@ while isPlaying:
             # Si on appuie sur la touche espace, l'oiseau saute
             if event.type == pygame.KEYDOWN:           
                 if event.key == pygame.K_SPACE:
-                    bird.jump()
+                    if not bird.isJumping:
+                        bird.jump()
+                    if bird.isJumping:
+                        bird.resetJump()
+                        bird.jump()
                 # On peut contrôler avec les flèches la vitesse du jeu
                 if event.key == pygame.K_RIGHT:
                     speed_multiplier += .1

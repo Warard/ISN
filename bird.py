@@ -40,12 +40,13 @@ class Bird():
         self.window.blit(self.image,(self.x, self.y))
 
     def jump(self):
-        if self.isJumping == False:
-            self.isJumping = True
-        elif self.isJumping == True:
-            self.isJumping = False
-            self.velocity = 5
-            self.mass = 2
+        self.isJumping = True
+
+    def resetJump(self):
+        self.isJumping = False
+        self.velocity = 5
+        self.mass = 2
+        self.F = 0
 
     def get_mask(self):
         """
