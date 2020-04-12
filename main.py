@@ -9,6 +9,7 @@ import random
 pygame.init()
 
 collision = True
+gameOver = False
 
 # Variable qui va permettre de réguler les FPS
 clock = pygame.time.Clock()
@@ -30,11 +31,16 @@ bird_img = pygame.image.load('imgs/bird1.png').convert_alpha()
 base_img = pygame.image.load('imgs/base.png').convert_alpha()
 
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
-background = Background(bg_img, window)
-base = Base(base_img, window)
-pipes = Pipes(pipe_img, settings['window_size'][0])
-pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
-bird = Bird(200, 200, window)
+def createObjects():
+    global background, base, pipes, pipes2, bird
+    background = Background(bg_img, window)
+    base = Base(base_img, window)
+    pipes = Pipes(pipe_img, settings['window_size'][0])
+    pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
+    bird = Bird(200, 200, window)
+    return(background, base, pipes, pipes2, bird)
+
+createObjects()
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -71,8 +77,9 @@ regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
+    #MENU ACCUEIL
     if menu == True:
-        #Affichage du menu d'accueil
+        # Création du fond, est des textes explicatfis
         background.draw_background() 
         base.draw_base()
         displayText(175, 25, titre, 40)
@@ -93,7 +100,9 @@ while isPlaying:
                     
         # Actualisation de l'affichage Pygame
         pygame.display.update()
-    else: 
+    
+    # JEU  
+    elif gameOver == False: 
         # Régulation du nombre de répétitions de la boucle par seconde
         clock.tick(settings['fps'] * speed_multiplier)
 
@@ -122,11 +131,11 @@ while isPlaying:
                     speed_multiplier -= .1
                     print("speed multiplier:", round(speed_multiplier, 2), end="\r")
                 if event.key == pygame.K_DOWN:
-                    #speed_multiplier = 1.0
-                    #print("speed multiplier:", round(speed_multiplier, 2), end="\r")
-                    bird.y += 10
-                if event.key == pygame.K_UP:
-                    bird.y -= 10      
+                    speed_multiplier = 1.0
+                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                bird.jump()
+
     
         # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
         background.draw_background()
@@ -136,9 +145,11 @@ while isPlaying:
         pipes.show(window)
         pipes.move()
 
+        #Affichage du deuxième groupe de tuyau
         pipes2.show(window)
         pipes2.move()
 
+        # Affichage de l'oiseau
         bird.show()
     
         # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
@@ -173,41 +184,71 @@ while isPlaying:
 
         # Si l'oiseau touche le sol, on perd
         if bird.y >= 492:
-            isPlaying = False 
+            gameOver = True
 
         # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
         if bird.isJumping == False:
             bird.y += bird.velocity
 
         #COLLISION
-        if collision:
-            #tuyau 1
-            if pipes.collide(bird, window) == True:
-                #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
-                if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
-                    print('Collision 1 détéctée', random.randint(0, 99))   
-            else:
-                if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
-                    score += 1     
-                    print('score : ', score)
-                
-            #uyeau 2  
-            if pipes2.collide(bird, window) == True:
-                #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
-                if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
-                    print('Collision 2 détéctée', random.randint(0, 99))
-            else:
-                if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
-                    score += 1
-                    print('score : ', score)         
+        #tuyau 1
+        if pipes.collide(bird, window) == True:
+            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+            if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
+                print('Collision 1 détéctée', random.randint(0, 99))   
+                if collision:
+                    gameOver = True
+        else:
+            if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
+                score += 1     
+                print('score : ', score)
+            
+        #tuyeau 2  
+        if pipes2.collide(bird, window) == True:
+            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+            if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
+                print('Collision 2 détéctée', random.randint(0, 99))
+                if collision:
+                    gameOver = True
+        else:
+            if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
+                score += 1
+                print('score : ', score)         
 
         # Affiche le score
         displayNumber(260, 30, str(score))      
 
         # Actualisation de l'affichage Pygame
-        pygame.display.update()      
+        pygame.display.update()   
+    
+    #GAME OVER
+    else:
+        background.draw_background() 
+        base.draw_base()
+        displayText(175, 25, "Game Over", 40)
+        displayText(175, 150, "Appuyez sur SPACE pour rejouer", 20)
+        displayText(175, 200, "Appuyez sur ECHAP pour quitter", 20)
+
+        #Récupération des touches préssées et événements         
+        for event in pygame.event.get():
+            # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
+            if event.type == pygame.QUIT:
+                isPlaying = False
+            # Si on appuie sur la touche espace, le menu s'efface et le jeu commence
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    gameOver = False
+                    menu = True
+                    score = 0
+                    createObjects()
+                if event.key == pygame.K_ESCAPE:
+                    isPlaying = False
+                    
+        # Actualisation de l'affichage Pygame
+        pygame.display.update()
+           
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()
-print("orvaor :)")
+print("Fin du jeu :)")
 quit()
