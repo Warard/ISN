@@ -12,7 +12,7 @@ class Bird():
 
         # Caractéristiques de l'oiseau
         self.isJumping = False
-        self.velocity = 5
+        self.velocity = 4
         self.mass = 2
         self.rect = self.image.get_rect()
         self.F = 0
@@ -31,9 +31,9 @@ class Bird():
                 self.mass = -2
  
             # Si la vitesse revient à son état original-1 (car on enlève 1 à chaque itération), alors on ré-initialise les variables
-            if self.velocity == -6:
+            if self.velocity == -5:
                 self.isJumping = False
-                self.velocity = 5
+                self.velocity = 4
                 self.mass = 2
 
         # Et enfin on affiche l'oiseau

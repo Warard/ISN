@@ -93,14 +93,12 @@ def saveScore(score):
     print('Score sauvegardée : ', score)
 
 def checkBestScore():
-    '''
+    """
     Retourne le meilleur score du fichier score.txt en tant que bestScore
-    '''
+    """
     with open("score.txt", 'r') as score:
         bestScore = max(score.read())
         return(bestScore)
-    
-bestScore = checkBestScore()
         
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -110,7 +108,7 @@ regle = "Règles: - Il faut que l'oiseau passe entre les tuyaux"
 regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
 regle3 = "- A chaque tuyaux passé, +1 point"
 regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
-bestScoreWithText = "Meilleur score : " + str(bestScore)
+bestScoreWithText = "Meilleur score : " + str(checkBestScore())
 
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
@@ -172,10 +170,15 @@ while isPlaying:
                 if event.key == pygame.K_DOWN:
                     speed_multiplier = 1.0
                     print("speed multiplier:", round(speed_multiplier, 2), end="\r")
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                bird.jump()
 
-    
+            # On est obligés de re-créer un nouvel event car le type est différents
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if not bird.isJumping:
+                        bird.jump()
+                if bird.isJumping:
+                    bird.resetJump()
+                    bird.jump()
+
         # Affichage du fond grâce à l'appel de la méthode draw_background de la class Background depuis map.py
         background.draw_background()
         background.move_background()
@@ -225,8 +228,13 @@ while isPlaying:
         if bird.y >= 492:
             gameOver = True
             saveScore(score)
+        
+        # Si l'oiseau va au dessus de la limite de la fenêtre, on perd
+        if bird.y <= 0:
+            gameOver = True
+            saveScore(score)
 
-        # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
+        # Si l'oiseau n'est pas en saut, il subit la force de gravité
         if bird.isJumping == False:
             bird.y += bird.velocity
 
