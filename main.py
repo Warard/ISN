@@ -8,8 +8,15 @@ import time
 # Initalisation du module Pygame
 pygame.init()
 
+#INITIALISATION
+#Active ou non les collisions avec les tuyau (=débug)
 collision = True
+# La boucle de jeu principale doit être executée tant que nous sommes en jeu
 gameOver = False
+isPlaying = True
+speed_multiplier = 1
+menu = True 
+score = 0
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -17,7 +24,6 @@ horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
 vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 window_x_size = settings['window_size'][0]
 window_y_size = settings['window_size'][1]
-
 
 # Variable qui va permettre de réguler les FPS
 clock = pygame.time.Clock()
@@ -32,6 +38,11 @@ pygame.display.set_caption('I.A Flappy Bird')
 icon = pygame.image.load('imgs/bird1.png')
 pygame.display.set_icon(icon)
 
+# SAUVEGARDE SCORE
+# Ouverture en mode append ; Cela permet de créer le fichier si il n'existe pas
+scoreFile = open("score.txt", "a")
+scoreFile.close()
+
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
 bg_img = pygame.image.load('imgs/bg2.png').convert_alpha()
 pipe_img = pygame.image.load('imgs/pipe.png').convert_alpha()
@@ -40,6 +51,9 @@ base_img = pygame.image.load('imgs/base.png').convert_alpha()
 
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
 def createObjects():
+    '''
+    Créé tous les objets (2 tuyaux, le sol, le fond, et l'oiseau depuis les classes respectives
+    '''
     global background, base, pipes, pipes2, bird
     background = Background(bg_img, window)
     base = Base(base_img, window)
@@ -50,15 +64,10 @@ def createObjects():
 
 createObjects()
 
-
-
-# La boucle de jeu principale doit être executée tant que nous sommes en jeu
-isPlaying = True
-speed_multiplier = 1
-menu = True 
-score = 0
-
 def displayNumber(x, y, text, color = (255, 255, 255)):
+    '''
+    Affiche un nombre
+    '''
     # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet    
     font = pygame.font.Font("flappy-bird-font.ttf", 50)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
@@ -66,11 +75,33 @@ def displayNumber(x, y, text, color = (255, 255, 255)):
 
 
 def displayText(x, y, text, font_size, color = (255, 255, 255)):
+    '''
+    Affiche un texte
+    '''
     font = pygame.font.SysFont("comicsansms", font_size)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
     window.blit(message, [x,y])
+    
+def saveScore(score):
+    '''
+    Enregistre le score dans le fichier score.txt
+    '''
+    savedScores = open('score.txt', "a")
+    scoreToSave = str(score) + "\n"
+    savedScores.write(scoreToSave)
+    savedScores.close()
+    print('Score sauvegardée : ', score)
 
-
+def checkBestScore():
+    '''
+    Retourne le meilleur score du fichier score.txt en tant que bestScore
+    '''
+    with open("score.txt", 'r') as score:
+        bestScore = max(score.read())
+        return(bestScore)
+    
+bestScore = checkBestScore()
+        
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
 
@@ -79,6 +110,8 @@ regle = "Règles: - Il faut que l'oiseau passe entre les tuyaux"
 regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
 regle3 = "- A chaque tuyaux passé, +1 point"
 regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
+bestScoreWithText = "Meilleur score : " + str(bestScore)
+
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
@@ -92,6 +125,7 @@ while isPlaying:
         displayText(100, 180, regle2, 20)
         displayText(100, 230, regle3, 20)
         displayText(100, 280, regle4, 20)
+        displayText(175, 380, bestScoreWithText, 30)
             
         #Récupération des touches préssées et événements         
         for event in pygame.event.get():
@@ -190,6 +224,7 @@ while isPlaying:
         # Si l'oiseau touche le sol, on perd
         if bird.y >= 492:
             gameOver = True
+            saveScore(score)
 
         # Si l'oiseau n'est pas en saut, il subit la force de GRAVITE
         if bird.isJumping == False:
@@ -203,6 +238,7 @@ while isPlaying:
                 print('Collision 1 détéctée', random.randint(0, 99))   
                 if collision:
                     gameOver = True
+                    saveScore(score)
             else:
                 if bird.x - (pipes.x + 44) == 0:
                     score += 1
@@ -215,6 +251,7 @@ while isPlaying:
                 print('Collision 2 détéctée', random.randint(0, 99))
                 if collision:
                     gameOver = True
+                    saveScore(score)
             else:        
                 if bird.x - (pipes2.x + 44) == 0:
                     score += 1
@@ -222,7 +259,7 @@ while isPlaying:
 
         # Affiche le score
         displayNumber(260, 30, str(score))      
-
+              
         # Actualisation de l'affichage Pygame
         pygame.display.update()   
     
@@ -235,6 +272,9 @@ while isPlaying:
         displayText(175, 200, "Appuyez sur SPACE pour rejouer", 20)
         displayText(175, 250, "Appuyez sur ECHAP pour quitter", 20)
         
+        #Le joueur a peut être fait un nouveau meilleur score, il faut donc actualiser la variable bestScore
+        bestScore = checkBestScore()
+
         #Récupération des touches préssées et événements         
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
@@ -252,7 +292,8 @@ while isPlaying:
                     
         # Actualisation de l'affichage Pygame
         pygame.display.update()
-           
+    
+
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()
