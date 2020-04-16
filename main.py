@@ -3,7 +3,7 @@ from settings import settings
 from map import Pipes, Background, Base
 from bird import Bird
 import random
-
+import time
 
 # Initalisation du module Pygame
 pygame.init()
@@ -11,11 +11,19 @@ pygame.init()
 collision = True
 gameOver = False
 
+# Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
+pipe_img_x_height = settings['pipe_img_x_height']
+horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
+vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
+window_x_size = settings['window_size'][0]
+window_y_size = settings['window_size'][1]
+
+
 # Variable qui va permettre de réguler les FPS
 clock = pygame.time.Clock()
 
 # Initialisation de la fenêtre
-window = pygame.display.set_mode((settings['window_size'][0], settings['window_size'][1]))
+window = pygame.display.set_mode((window_x_size, window_y_size))
 
 # Titre de la fenêtre
 pygame.display.set_caption('I.A Flappy Bird')
@@ -35,17 +43,14 @@ def createObjects():
     global background, base, pipes, pipes2, bird
     background = Background(bg_img, window)
     base = Base(base_img, window)
-    pipes = Pipes(pipe_img, settings['window_size'][0])
-    pipes2 = Pipes(pipe_img, settings['window_size'][0] + settings['horizontal_space_btw_pipes'])
+    pipes = Pipes(pipe_img, window_x_size)
+    pipes2 = Pipes(pipe_img, window_x_size + horizontal_space_btw_pipes)
     bird = Bird(200, 200, window)
     return(background, base, pipes, pipes2, bird)
 
 createObjects()
 
-# Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
-pipe_img_x_height = settings['pipe_img_x_height']
-horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
-vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
+
 
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 isPlaying = True
@@ -198,10 +203,10 @@ while isPlaying:
                 print('Collision 1 détéctée', random.randint(0, 99))   
                 if collision:
                     gameOver = True
-        else:
-            if bird.x > (pipes.x - 34) and bird.x < (pipes.x + 34):      
-                score += 1     
-                print('score : ', score)
+            else:
+                if bird.x - (pipes.x + 44) == 0:
+                    score += 1
+                    print('score : ', score)
             
         #tuyeau 2  
         if pipes2.collide(bird, window) == True:
@@ -210,10 +215,10 @@ while isPlaying:
                 print('Collision 2 détéctée', random.randint(0, 99))
                 if collision:
                     gameOver = True
-        else:
-            if bird.x > (pipes2.x - 34) and bird.x < (pipes2.x + 34): 
-                score += 1
-                print('score : ', score)         
+            else:        
+                if bird.x - (pipes2.x + 44) == 0:
+                    score += 1
+                    print('score : ', score)
 
         # Affiche le score
         displayNumber(260, 30, str(score))      
@@ -225,10 +230,11 @@ while isPlaying:
     else:
         background.draw_background() 
         base.draw_base()
-        displayText(175, 25, "Game Over", 40)
-        displayText(175, 150, "Appuyez sur SPACE pour rejouer", 20)
-        displayText(175, 200, "Appuyez sur ECHAP pour quitter", 20)
-
+        displayText(175, 100, "Game Over", 40)
+        displayNumber(260, 30, str(score))
+        displayText(175, 200, "Appuyez sur SPACE pour rejouer", 20)
+        displayText(175, 250, "Appuyez sur ECHAP pour quitter", 20)
+        
         #Récupération des touches préssées et événements         
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
