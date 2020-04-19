@@ -107,22 +107,14 @@ def checkBestScore():
 runOnce = 0
 birdsPopulation = []
 def generatePopulation(birdsPopulation):
+    """
+    Génère la population d'oiseau que l'on va entraîner. Le nombre d'oiseau dépend de la valeur choisie dans settings.py 
+    """
     print('Création de la population ...')   
     while len(birdsPopulation) < populationNumber:
         birdsPopulation.append(Bird(250, 250, window))     
     print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)
     return birdsPopulation
-    
-    # if len(birdsPopulation) == populationNumber:
-    #     print('Toute la population a été créé')
-    #     populationCreated = True
-    # else:
-    #     print('Toute la population n\'a pas été générée')
-    #     populationCreated = False
-    
-    # print('ETAT de PopulationCreated dans la fonction : ', populationCreated)
-    # return populationCreated
-    
         
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -293,22 +285,24 @@ while isPlaying:
         # Affiche le score
         displayNumber(260, 30, str(score))     
             
-        
+        #Si le mode IA est activé
         if IATraining:
+            #Lancer qu'une seule fois la création de population
             if runOnce == 0:
                 generatePopulation(birdsPopulation)
                 runOnce +=1
             else:
                 print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)            
           
+            #Pour chaque oiseau de la population
             for n in range (populationNumber):
+                #Afficher l'oiseau
                 birdsPopulation[n].show()
+                #Faire subir à chaque oiseau la gravité
                 if birdsPopulation[n].isJumping == False:
                     birdsPopulation[n].y += birdsPopulation[n].velocity
+                #Faire sauter chaque oiseau aléatoirement (=débug)
                 birdsPopulation[random.randint(0, 9)].jump()
-            
-            # randomBirdJump = random.randint(0, 9)
-            # birdsPopulation[randomBirdJump].jump()
               
         # Actualisation de l'affichage Pygame
         pygame.display.update()   
