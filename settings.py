@@ -7,5 +7,6 @@ settings = {
     'pipe_img_x_height': (52),
     'pipe_img_y_height': (515),
     'speed': (2),  # max = 2 (plus la valeur est basse, plus c'est fluide, mais plus ça prends des perfs')
-    'window_size': (576, 624)  # base_size + bg_size
+    'window_size': (576, 624),  # base_size + bg_size
+    'populationNumber': (10)
 }

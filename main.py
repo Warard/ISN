@@ -10,13 +10,15 @@ pygame.init()
 
 #INITIALISATION
 #Active ou non les collisions avec les tuyau (=débug)
-collision = True
+collision = False
+gravitiy = False
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 gameOver = False
 isPlaying = True
 speed_multiplier = 1
 menu = True 
 score = 0
+IATraining = True
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -24,6 +26,7 @@ horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
 vertical_space_btw_pipes = settings['vertical_space_btw_pipes']
 window_x_size = settings['window_size'][0]
 window_y_size = settings['window_size'][1]
+populationNumber = settings['populationNumber']
 
 # Variable qui va permettre de réguler les FPS
 clock = pygame.time.Clock()
@@ -52,7 +55,7 @@ base_img = pygame.image.load('imgs/base.png').convert_alpha()
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
 def createObjects():
     '''
-    Créé tous les objets (2 tuyaux, le sol, le fond, et l'oiseau depuis les classes respectives
+    Créé tous les objets (2 tuyaux, le sol, le fond, et l'oiseau depuis les classes respectives)
     '''
     global background, base, pipes, pipes2, bird
     background = Background(bg_img, window)
@@ -99,6 +102,27 @@ def checkBestScore():
     with open("score.txt", 'r') as score:
         bestScore = max(score.read())
         return(bestScore)
+
+
+runOnce = 0
+birdsPopulation = []
+def generatePopulation(birdsPopulation):
+    print('Création de la population ...')   
+    while len(birdsPopulation) < populationNumber:
+        birdsPopulation.append(Bird(250, 250, window))     
+    print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)
+    return birdsPopulation
+    
+    # if len(birdsPopulation) == populationNumber:
+    #     print('Toute la population a été créé')
+    #     populationCreated = True
+    # else:
+    #     print('Toute la population n\'a pas été générée')
+    #     populationCreated = False
+    
+    # print('ETAT de PopulationCreated dans la fonction : ', populationCreated)
+    # return populationCreated
+    
         
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
@@ -235,8 +259,9 @@ while isPlaying:
             saveScore(score)
 
         # Si l'oiseau n'est pas en saut, il subit la force de gravité
-        if bird.isJumping == False:
-            bird.y += bird.velocity
+        if gravitiy:
+            if bird.isJumping == False:
+                bird.y += bird.velocity
 
         #COLLISION
         #tuyau 1
@@ -266,7 +291,24 @@ while isPlaying:
                     print('score : ', score)
 
         # Affiche le score
-        displayNumber(260, 30, str(score))      
+        displayNumber(260, 30, str(score))     
+            
+        
+        if IATraining:
+            if runOnce == 0:
+                generatePopulation(birdsPopulation)
+                runOnce +=1
+            else:
+                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)            
+          
+            for n in range (populationNumber):
+                birdsPopulation[n].show()
+                if birdsPopulation[n].isJumping == False:
+                    birdsPopulation[n].y += birdsPopulation[n].velocity
+                birdsPopulation[random.randint(0, 9)].jump()
+            
+            # randomBirdJump = random.randint(0, 9)
+            # birdsPopulation[randomBirdJump].jump()
               
         # Actualisation de l'affichage Pygame
         pygame.display.update()   
