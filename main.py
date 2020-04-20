@@ -10,15 +10,15 @@ pygame.init()
 
 #INITIALISATION
 #Active ou non les collisions avec les tuyau (=débug)
-collision = False
-gravitiy = False
+collision = True
+gravitiy = True
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 gameOver = False
 isPlaying = True
 speed_multiplier = 1
 menu = True 
 score = 0
-IATraining = True
+IATraining = False
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -44,7 +44,7 @@ pygame.display.set_icon(icon)
 # SAUVEGARDE SCORE
 # Ouverture en mode append ; Cela permet de créer le fichier si il n'existe pas
 scoreFile = open("score.txt", "a")
-scoreFile.close()
+#scoreFile.close()
 
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
 bg_img = pygame.image.load('imgs/bg2.png').convert_alpha()
@@ -90,7 +90,7 @@ def saveScore(score):
     Enregistre le score dans le fichier score.txt
     '''
     savedScores = open('score.txt', "a")
-    scoreToSave = str(score) + "\n"
+    scoreToSave = "," + str(score)
     savedScores.write(scoreToSave)
     savedScores.close()
     print('Score sauvegardée : ', score)
@@ -99,10 +99,14 @@ def checkBestScore():
     """
     Retourne le meilleur score du fichier score.txt en tant que bestScore
     """
-    with open("score.txt", 'r') as score:
-        bestScore = max(score.read())
-        return(bestScore)
-
+    with open("score.txt", 'r') as score: 
+        listScore = (score.read().split(sep=","))
+        
+        listScoreInt = []
+        for n in range(len(listScore)):
+            listScoreInt.append(int(listScore[n]))
+            bestScore = max(listScoreInt)    
+    return bestScore
 
 runOnce = 0
 birdsPopulation = []
@@ -124,7 +128,7 @@ regle = "Règles: - Il faut que l'oiseau passe entre les tuyaux"
 regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
 regle3 = "- A chaque tuyaux passé, +1 point"
 regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
-bestScoreWithText = "Meilleur score : " + str(checkBestScore())
+bestScoreWithText = "Meilleur score : " 
 
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
@@ -139,7 +143,7 @@ while isPlaying:
         displayText(100, 180, regle2, 20)
         displayText(100, 230, regle3, 20)
         displayText(100, 280, regle4, 20)
-        displayText(175, 380, bestScoreWithText, 30)
+        displayText(175, 380, bestScoreWithText + str(checkBestScore()), 30)
             
         #Récupération des touches préssées et événements         
         for event in pygame.event.get():
