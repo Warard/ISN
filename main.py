@@ -18,7 +18,7 @@ isPlaying = True
 speed_multiplier = 1
 menu = True 
 score = 0
-IATraining = False
+IATraining = True
 
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
@@ -296,18 +296,51 @@ while isPlaying:
                 generatePopulation(birdsPopulation)
                 runOnce +=1
             else:
-                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)            
-          
-            #Pour chaque oiseau de la population
-            for n in range (populationNumber):
-                #Afficher l'oiseau
-                birdsPopulation[n].show()
-                #Faire subir à chaque oiseau la gravité
-                if birdsPopulation[n].isJumping == False:
-                    birdsPopulation[n].y += birdsPopulation[n].velocity
-                #Faire sauter chaque oiseau aléatoirement (=débug)
-                birdsPopulation[random.randint(0, 9)].jump()
-              
+                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)          
+
+                #Pour chaque oiseau de la population
+            if len(birdsPopulation) > 0:
+                for uniqueBird in birdsPopulation:
+                    n = birdsPopulation.index(uniqueBird)
+                    print("B.R :", len(birdsPopulation), '; n =', n)
+                    #Afficher l'oiseau
+                    birdsPopulation[n].show()
+                    #Faire subir à chaque oiseau la gravité
+                    if birdsPopulation[n].isJumping == False:
+                        birdsPopulation[n].y += birdsPopulation[n].velocity
+                    #Faire sauter chaque oiseau aléatoirement (=débug)
+                    birdsPopulation[random.randint(0, len(birdsPopulation)-1)].jump()
+                
+                    #tuyau 1
+                    if pipes.collide(birdsPopulation[n], window) == True:
+                        #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+                        if birdsPopulation[n].y < pipes.y or birdsPopulation[n].y > (pipes.y + vertical_space_btw_pipes):
+                            print('Collision 1 détéctée', random.randint(0, 99))   
+                            if collision:
+                                birdsPopulation.pop(n)
+                                print('bird', n, 'died on first pipe')
+                                n -= 1
+                        else:
+                            if birdsPopulation[n].x - (pipes.x + 44) == 0:
+                                break
+                                #birdsPopulation[n].fitness += 0.1
+
+                                
+                    #tuyau 2
+                    if pipes2.collide(birdsPopulation[n], window) == True:
+                        #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+                        if birdsPopulation[n].y < pipes2.y or birdsPopulation[n].y > (pipes2.y + vertical_space_btw_pipes):
+                            print('Collision 1 détéctée', random.randint(0, 99))   
+                            if collision:
+                                birdsPopulation.pop(n)
+                                print('bird', n, 'died on second pipe')
+                                n -= 1
+                        else:
+                            if birdsPopulation[n].x - (pipes2.x + 44) == 0:
+                                break
+                                #birdsPopulation[n].fitness += 0.1
+
+
         # Actualisation de l'affichage Pygame
         pygame.display.update()   
     
