@@ -2,13 +2,14 @@ import pygame
 import settings
 
 class Bird():
-    def __init__(self, x, y, window):
+    def __init__(self, x, y, window, fitness = 0, pipe1Jump=0, pipe2Jump=0):
         self.x = x
         self.y = y
         # Changement d'image si battement d'aile self.img_count = 0
         # self.img = self.image[0]
         self.image = pygame.image.load('imgs/bird1.png')
         self.window = window
+        self.fitness = fitness
 
         # Caractéristiques de l'oiseau
         self.isJumping = False
@@ -16,6 +17,8 @@ class Bird():
         self.mass = 2
         self.rect = self.image.get_rect()
         self.F = 0
+        self.pipe1Jump = pipe1Jump
+        self.pipe2Jump = pipe2Jump        
 
     def show(self):
         if self.isJumping == True:

@@ -20,6 +20,10 @@ menu = True
 score = 0
 IATraining = True
 
+if IATraining:
+    collision = False
+    gravitiy = False
+
 # Les variables qui sont importées depuis un autre fichier sont stockées ici, pour éviter de les importer à chaque utilisation
 pipe_img_x_height = settings['pipe_img_x_height']
 horizontal_space_btw_pipes = settings['horizontal_space_btw_pipes']
@@ -116,7 +120,8 @@ def generatePopulation(birdsPopulation):
     """
     print('Création de la population ...')   
     while len(birdsPopulation) < populationNumber:
-        birdsPopulation.append(Bird(250, 250, window))     
+        randomJumpDistance = random.randint(50, 300)
+        birdsPopulation.append(Bird(300, 150, window, pipe1Jump=randomJumpDistance, pipe2Jump=randomJumpDistance))     
     print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)
     return birdsPopulation
         
@@ -134,7 +139,7 @@ bestScoreWithText = "Meilleur score : "
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
     #MENU ACCUEIL
-    if menu == True:
+    if menu and not IATraining:
         # Création du fond, est des textes explicatfis
         background.draw_background() 
         base.draw_base()
@@ -296,13 +301,21 @@ while isPlaying:
                 generatePopulation(birdsPopulation)
                 runOnce +=1
             else:
-                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)          
+                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)        
+                
+            birdPipes1Distance = pipes.x - bird.x
+            print('DISTANCE OISEAU TUYAU1 =', birdPipes1Distance)  
+            
+            birdPipes2Distance = pipes2.x - bird.x
+            print('DISTANCE OISEAU TUYAU2 =', birdPipes2Distance)  
 
-                #Pour chaque oiseau de la population
+            #Si il reste une population d'oiseau
             if len(birdsPopulation) > 0:
+                #Pour chaque oiseau de la population
                 for uniqueBird in birdsPopulation:
+                    #n est le numéro de l'index de chaque oiseau dans la liste de population
                     n = birdsPopulation.index(uniqueBird)
-                    print("B.R :", len(birdsPopulation), '; n =', n)
+                # print('bird number', n, 'will jump at dist =', birdsPopulation[n].pipe1Jump)
                     #Afficher l'oiseau
                     birdsPopulation[n].show()
                     #Faire subir à chaque oiseau la gravité
@@ -310,35 +323,48 @@ while isPlaying:
                         birdsPopulation[n].y += birdsPopulation[n].velocity
                     #Faire sauter chaque oiseau aléatoirement (=débug)
                     birdsPopulation[random.randint(0, len(birdsPopulation)-1)].jump()
+                    
+                    #Chaque oiseau saute quand il atteint sa personnalité
+                    if(birdPipes1Distance == birdsPopulation[n].pipe1Jump):
+                        birdsPopulation[n].jump()
+                        print('l\'oiseau a sauté')
+                    
+                    #Augmente le fitness de chaque oiseau de 0.1 par frame
+                    birdsPopulation[n].fitness += 0.1
+                # print('fitness oiseau ', n, '=', birdsPopulation[n].fitness)
+                    
+                    #Enregistrement du fitness de tous les oiseaux
+                    listFitness = []
+                    listFitness.append(int(birdsPopulation[n].fitness))
+                    bestFitness = max(listFitness)    
+                # print('best fitness = ',bestFitness, 'for bird index =', listFitness.index(bestFitness))
                 
-                    #tuyau 1
+                    #COLLISION tuyau 1
                     if pipes.collide(birdsPopulation[n], window) == True:
                         #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
                         if birdsPopulation[n].y < pipes.y or birdsPopulation[n].y > (pipes.y + vertical_space_btw_pipes):
-                            print('Collision 1 détéctée', random.randint(0, 99))   
-                            if collision:
-                                birdsPopulation.pop(n)
-                                print('bird', n, 'died on first pipe')
-                                n -= 1
+                            # print('Collision 1 détéctée', random.randint(0, 99))   
+                            birdsPopulation.pop(n)
+                            # print('bird', n, 'died on first pipe')
+                            n -= 1
                         else:
                             if birdsPopulation[n].x - (pipes.x + 44) == 0:
-                                break
-                                #birdsPopulation[n].fitness += 0.1
+                                birdsPopulation[n].fitness += 1
 
-                                
-                    #tuyau 2
+                if len(birdsPopulation) > 0:            
+                    #COLLISION tuyau 2
                     if pipes2.collide(birdsPopulation[n], window) == True:
                         #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
                         if birdsPopulation[n].y < pipes2.y or birdsPopulation[n].y > (pipes2.y + vertical_space_btw_pipes):
-                            print('Collision 1 détéctée', random.randint(0, 99))   
-                            if collision:
-                                birdsPopulation.pop(n)
-                                print('bird', n, 'died on second pipe')
-                                n -= 1
+                            # print('Collision 1 détéctée', random.randint(0, 99))   
+                            birdsPopulation.pop(n)
+                            # print('bird', n, 'died on second pipe')
+                            n -= 1
                         else:
                             if birdsPopulation[n].x - (pipes2.x + 44) == 0:
-                                break
-                                #birdsPopulation[n].fitness += 0.1
+                                birdsPopulation[n].fitness += 1
+                                
+
 
 
         # Actualisation de l'affichage Pygame
