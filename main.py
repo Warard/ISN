@@ -8,15 +8,15 @@ import time
 # Initalisation du module Pygame
 pygame.init()
 
-#INITIALISATION
-#Active ou non les collisions avec les tuyau (=débug)
+# INITIALISATION
+# Active ou non les collisions avec les tuyau (=débug)
 collision = True
 gravitiy = True
 # La boucle de jeu principale doit être executée tant que nous sommes en jeu
 gameOver = False
 isPlaying = True
 speed_multiplier = 1
-menu = True 
+menu = True
 score = 0
 IATraining = True
 
@@ -48,13 +48,14 @@ pygame.display.set_icon(icon)
 # SAUVEGARDE SCORE
 # Ouverture en mode append ; Cela permet de créer le fichier si il n'existe pas
 scoreFile = open("score.txt", "a")
-#scoreFile.close()
+# scoreFile.close()
 
 # Dans un soucis de simplicité et de légereté du code, stockage des images dans des variables
 bg_img = pygame.image.load('imgs/bg2.png').convert_alpha()
 pipe_img = pygame.image.load('imgs/pipe.png').convert_alpha()
 bird_img = pygame.image.load('imgs/bird1.png').convert_alpha()
 base_img = pygame.image.load('imgs/base.png').convert_alpha()
+
 
 # Création des objets tuyaux et fond de carte depuis la class Map dans map.py
 def createObjects():
@@ -71,24 +72,26 @@ def createObjects():
 
 createObjects()
 
-def displayNumber(x, y, text, color = (255, 255, 255)):
+
+def displayNumber(x, y, text, color=(255, 255, 255)):
     '''
     Affiche un nombre
     '''
-    # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet    
+    # Font est une variable qui définie la police que nous voulons utiliser. Nous en avons importée une libre de droits sur internet
     font = pygame.font.Font("flappy-bird-font.ttf", 50)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
-    window.blit(message, [x,y])
+    window.blit(message, [x, y])
 
 
-def displayText(x, y, text, font_size, color = (255, 255, 255)):
+def displayText(x, y, text, font_size, color=(255, 255, 255)):
     '''
     Affiche un texte
     '''
     font = pygame.font.SysFont("comicsansms", font_size)
     message = font.render(text, True, color)  # On pré-rend le message pour pouvoir l'afficher
-    window.blit(message, [x,y])
-    
+    window.blit(message, [x, y])
+
+
 def saveScore(score):
     '''
     Enregistre le score dans le fichier score.txt
@@ -99,32 +102,35 @@ def saveScore(score):
     savedScores.close()
     print("Score sauvegardée : {}".format(score))
 
+
 def checkBestScore():
     """
     Retourne le meilleur score du fichier score.txt en tant que bestScore
     """
-    with open("score.txt", 'r') as score: 
+    with open("score.txt", 'r') as score:
         listScore = (score.read().split(sep=","))
-        
+
         listScoreInt = []
         for n in range(len(listScore)):
             listScoreInt.append(int(listScore[n]))
-            bestScore = max(listScoreInt)    
+            bestScore = max(listScoreInt)
     return bestScore
 
 runOnce = 0
 birdsPopulation = []
+
+
 def generatePopulation(birdsPopulation):
     """
-    Génère la population d'oiseau que l'on va entraîner. Le nombre d'oiseau dépend de la valeur choisie dans settings.py 
+    Génère la population d'oiseau que l'on va entraîner. Le nombre d'oiseau dépend de la valeur choisie dans settings.py
     """
-    print('Création de la population ...')   
+    print('Création de la population ...')
     while len(birdsPopulation) < populationNumber:
         randomJumpDistance = random.randint(50, 300)
-        birdsPopulation.append(Bird(300, 150, window, pipe1Jump=randomJumpDistance, pipe2Jump=randomJumpDistance))     
+        birdsPopulation.append(Bird(300, 150, window, pipe1Jump=randomJumpDistance, pipe2Jump=randomJumpDistance))
     print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)
     return birdsPopulation
-        
+
 # On utilise une fonction de pygame qu'on stock dans une variable pour pouvoir accèder plus tard aux touches préssées
 keys = pygame.key.get_pressed()
 
@@ -133,15 +139,15 @@ regle = "Règles: - Il faut que l'oiseau passe entre les tuyaux"
 regle2 = "- Il ne faut pas que l'oiseau touche les tuyaux"
 regle3 = "- A chaque tuyaux passé, +1 point"
 regle4 = "- Appuyez sur espace pour sauter et lancer le jeu !"
-bestScoreWithText = "Meilleur score : " 
+bestScoreWithText = "Meilleur score : "
 
 
 # Boucle principale, tant que le jeu est actif, cette boucle tourne
 while isPlaying:
-    #MENU ACCUEIL
+    # MENU ACCUEIL
     if menu and not IATraining:
         # Création du fond, est des textes explicatfis
-        background.draw_background() 
+        background.draw_background()
         base.draw_base()
         displayText(175, 25, titre, 40)
         displayText(30, 130, regle, 20)
@@ -149,8 +155,8 @@ while isPlaying:
         displayText(100, 230, regle3, 20)
         displayText(100, 280, regle4, 20)
         displayText(175, 380, bestScoreWithText + str(checkBestScore()), 30)
-            
-        #Récupération des touches préssées et événements         
+
+        # Récupération des touches préssées et événements
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
             if event.type == pygame.QUIT:
@@ -159,12 +165,12 @@ while isPlaying:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     menu = False
-                    
+
         # Actualisation de l'affichage Pygame
         pygame.display.update()
-    
-    # JEU  
-    elif gameOver == False: 
+
+    # JEU
+    elif not gameOver:
         # Régulation du nombre de répétitions de la boucle par seconde
         clock.tick(settings['fps'] * speed_multiplier)
 
@@ -178,7 +184,7 @@ while isPlaying:
             if event.type == pygame.QUIT:
                 isPlaying = False
             # Si on appuie sur la touche espace, l'oiseau saute
-            if event.type == pygame.KEYDOWN:           
+            if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if not bird.isJumping:
                         bird.jump()
@@ -212,13 +218,13 @@ while isPlaying:
         pipes.show(window)
         pipes.move()
 
-        #Affichage du deuxième groupe de tuyau
+        # Affichage du deuxième groupe de tuyau
         pipes2.show(window)
         pipes2.move()
 
         # Affichage de l'oiseau
         bird.show()
-    
+
         # Déplacement et actualisation de l'affichage via les méthodes de la class Background depuis map.py
         base.move_base()
         base.draw_base()
@@ -243,7 +249,7 @@ while isPlaying:
             # print('new base')
             base = Base(base_img, window)
 
-        # Si le fond est trop à gauche, alors on le supprime et on en recréer un    
+        # Si le fond est trop à gauche, alors on le supprime et on en recréer un
         if background.x <= -350:
             del(background)
             # print('new background')
@@ -253,7 +259,7 @@ while isPlaying:
         if bird.y >= 492:
             gameOver = True
             saveScore(score)
-        
+
         # Si l'oiseau va au dessus de la limite de la fenêtre, on perd
         if bird.y <= 0:
             gameOver = True
@@ -261,15 +267,15 @@ while isPlaying:
 
         # Si l'oiseau n'est pas en saut, il subit la force de gravité
         if gravitiy:
-            if bird.isJumping == False:
+            if not bird.isJumping:
                 bird.y += bird.velocity
 
-        #COLLISION
-        #tuyau 1
-        if pipes.collide(bird, window) == True:
-            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+        # COLLISION
+        # tuyau 1
+        if pipes.collide(bird, window):
+            # Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
-                print("Collision 1 détéctée {}".format(random.randint(0, 99)))   
+                print("Collision 1 détéctée {}".format(random.randint(0, 99)))
                 if collision:
                     gameOver = True
                     saveScore(score)
@@ -277,73 +283,73 @@ while isPlaying:
                 if bird.x - (pipes.x + 44) == 0:
                     score += 1
                     print('score : ', score)
-            
-        #tuyeau 2  
-        if pipes2.collide(bird, window) == True:
-            #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+
+        # tuyau 2
+        if pipes2.collide(bird, window):
+            # Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
                 print("Collision 2 détéctée {}".format(random.randint(0, 99)))
                 if collision:
                     gameOver = True
                     saveScore(score)
-            else:        
+            else:
                 if bird.x - (pipes2.x + 44) == 0:
                     score += 1
                     print('score : ', score)
 
         # Affiche le score
-        displayNumber(260, 30, str(score))     
-            
-        #Si le mode IA est activé
+        displayNumber(260, 30, str(score))
+
+        # Si le mode IA est activé
         if IATraining:
-            #Lancer qu'une seule fois la création de population
+            # Lancer qu'une seule fois la création de population
             if runOnce == 0:
                 generatePopulation(birdsPopulation)
-                runOnce +=1
+                runOnce += 1
             else:
-                print("Nb d'oiseau : {}/{}".format(len(birdsPopulation), populationNumber))        
-                
-            birdPipes1Distance = pipes.x - bird.x
-            print("DISTANCE OISEAU TUYAU1 = {}".format(birdPipes1Distance))  
-            
-            birdPipes2Distance = pipes2.x - bird.x
-            print("DISTANCE OISEAU TUYAU2 = {}".format(birdPipes2Distance))  
+                print("Nb d'oiseau : {}/{}".format(len(birdsPopulation), populationNumber))
 
-            #Si il reste une population d'oiseau
+            birdPipes1Distance = pipes.x - bird.x
+            print("DISTANCE OISEAU TUYAU1 = {}".format(birdPipes1Distance))
+
+            birdPipes2Distance = pipes2.x - bird.x
+            print("DISTANCE OISEAU TUYAU2 = {}".format(birdPipes2Distance))
+
+            # Si il reste une population d'oiseau
             if len(birdsPopulation) > 0:
-                #Pour chaque oiseau de la population
+                # Pour chaque oiseau de la population
                 for uniqueBird in birdsPopulation:
-                    #n est le numéro de l'index de chaque oiseau dans la liste de population
+                    # n est le numéro de l'index de chaque oiseau dans la liste de population
                     n = birdsPopulation.index(uniqueBird)
                 # print('bird number', n, 'will jump at dist =', birdsPopulation[n].pipe1Jump)
-                    #Afficher l'oiseau
+                    # Afficher l'oiseau
                     birdsPopulation[n].show()
-                    #Faire subir à chaque oiseau la gravité
-                    if birdsPopulation[n].isJumping == False:
+                    # Faire subir à chaque oiseau la gravité
+                    if not birdsPopulation[n].isJumping:
                         birdsPopulation[n].y += birdsPopulation[n].velocity
-                    #Faire sauter chaque oiseau aléatoirement (=débug)
+                    # Faire sauter chaque oiseau aléatoirement (=débug)
                     birdsPopulation[random.randint(0, len(birdsPopulation)-1)].jump()
-                    
-                    #Chaque oiseau saute quand il atteint sa personnalité
+
+                    # Chaque oiseau saute quand il atteint sa personnalité
                     if(birdPipes1Distance == birdsPopulation[n].pipe1Jump):
                         birdsPopulation[n].jump()
                         print("l'oiseau a sauté")
-                    
-                    #Augmente le fitness de chaque oiseau de 0.1 par frame
+
+                    # Augmente le fitness de chaque oiseau de 0.1 par frame
                     birdsPopulation[n].fitness += 0.1
                 # print('fitness oiseau ', n, '=', birdsPopulation[n].fitness)
-                    
-                    #Enregistrement du fitness de tous les oiseaux
+
+                    # Enregistrement du fitness de tous les oiseaux
                     listFitness = []
                     listFitness.append(int(birdsPopulation[n].fitness))
-                    bestFitness = max(listFitness)    
+                    bestFitness = max(listFitness)
                 # print('best fitness = ',bestFitness, 'for bird index =', listFitness.index(bestFitness))
-                
-                    #COLLISION tuyau 1
-                    if pipes.collide(birdsPopulation[n], window) == True:
-                        #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+
+                    # COLLISION tuyau 1
+                    if pipes.collide(birdsPopulation[n], window):
+                        # Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
                         if birdsPopulation[n].y < pipes.y or birdsPopulation[n].y > (pipes.y + vertical_space_btw_pipes):
-                            # print('Collision 1 détéctée', random.randint(0, 99))   
+                            # print('Collision 1 détéctée', random.randint(0, 99))
                             birdsPopulation.pop(n)
                             # print('bird', n, 'died on first pipe')
                             n -= 1
@@ -351,38 +357,35 @@ while isPlaying:
                             if birdsPopulation[n].x - (pipes.x + 44) == 0:
                                 birdsPopulation[n].fitness += 1
 
-                if len(birdsPopulation) > 0:            
-                    #COLLISION tuyau 2
-                    if pipes2.collide(birdsPopulation[n], window) == True:
-                        #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
+                if len(birdsPopulation) > 0:
+                    # COLLISION tuyau 2
+                    if pipes2.collide(birdsPopulation[n], window):
+                        # Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
                         if birdsPopulation[n].y < pipes2.y or birdsPopulation[n].y > (pipes2.y + vertical_space_btw_pipes):
-                            # print('Collision 1 détéctée', random.randint(0, 99))   
+                            # print('Collision 1 détéctée', random.randint(0, 99))
                             birdsPopulation.pop(n)
                             # print('bird', n, 'died on second pipe')
                             n -= 1
                         else:
                             if birdsPopulation[n].x - (pipes2.x + 44) == 0:
                                 birdsPopulation[n].fitness += 1
-                                
-
-
 
         # Actualisation de l'affichage Pygame
-        pygame.display.update()   
-    
-    #GAME OVER
+        pygame.display.update()
+
+    # GAME OVER
     else:
-        background.draw_background() 
+        background.draw_background()
         base.draw_base()
         displayText(175, 100, "Game Over", 40)
         displayNumber(260, 30, str(score))
         displayText(175, 200, "Appuyez sur SPACE pour rejouer", 20)
         displayText(175, 250, "Appuyez sur ECHAP pour quitter", 20)
-        
-        #Le joueur a peut être fait un nouveau meilleur score, il faut donc actualiser la variable bestScore
+
+        # Le joueur a peut être fait un nouveau meilleur score, il faut donc actualiser la variable bestScore
         bestScore = checkBestScore()
 
-        #Récupération des touches préssées et événements         
+        # Récupération des touches préssées et événements
         for event in pygame.event.get():
             # Si nous récupérons l'évenement "quitter", on arrête la boucle de jeu principale
             if event.type == pygame.QUIT:
@@ -396,11 +399,9 @@ while isPlaying:
                     createObjects()
                 if event.key == pygame.K_ESCAPE:
                     isPlaying = False
-                    
+
         # Actualisation de l'affichage Pygame
         pygame.display.update()
-    
-
 
 # Si la boucle principale de jeu est finie, on doit quitter proprement le programme
 pygame.quit()
