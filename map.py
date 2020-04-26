@@ -37,7 +37,7 @@ class Background():
         """La méthode move_background permet de faire déffiler l'image de fond"""
         self.x -= 0.1 * self.speed
 
-        
+
 class Base():
     def __init__(self, base_img, window):
         """
@@ -53,8 +53,7 @@ class Base():
         self.base_img = base_img
         self.window = window
         self.speed = settings['speed']
-        
-        
+
     # Affiche la base
     def draw_base(self):
         """La méthode draw_base permet d'afficher l'image de sol"""
@@ -65,8 +64,6 @@ class Base():
     def move_base(self):
         """La méthode move_base permet de déplacer vers la gauche le sol à la même vitesse que les tuyaux"""
         self.x -= self.speed
-        
-        
 
 
 class Pipes():
@@ -113,7 +110,7 @@ class Pipes():
         """La méthode move de la classe Pipes permet de déplacer vers la gauche les deux parties du tuyau"""
         self.x -= self.speed
         # print('Pipes in movements !')
-        
+
     def collide(self, bird, win):
         """
         returns if a point is colliding with the pipe
@@ -127,7 +124,7 @@ class Pipes():
         bottom_offset = (self.x - bird.x, self.bottom - round(bird.y))
 
         b_point = bird_mask.overlap(mask_pipe_bottom, bottom_offset)
-        t_point = bird_mask.overlap(mask_pipe_sup,top_offset)
+        t_point = bird_mask.overlap(mask_pipe_sup, top_offset)
 
         if b_point or t_point:
             return True
