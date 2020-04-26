@@ -97,7 +97,7 @@ def saveScore(score):
     scoreToSave = "," + str(score)
     savedScores.write(scoreToSave)
     savedScores.close()
-    print('Score sauvegardée : ', score)
+    print("Score sauvegardée : {}".format(score))
 
 def checkBestScore():
     """
@@ -188,13 +188,13 @@ while isPlaying:
                 # On peut contrôler avec les flèches la vitesse du jeu
                 if event.key == pygame.K_RIGHT:
                     speed_multiplier += .1
-                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")  # On est obligés de round() la valeur à cause des floating points
+                    print("speed multiplier: {}".format(round(speed_multiplier, 2)), end="\r")  # On est obligés de round() la valeur à cause des floating points
                 if event.key == pygame.K_LEFT:
                     speed_multiplier -= .1
-                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                    print("speed multiplier: {}".format(round(speed_multiplier, 2)), end="\r")
                 if event.key == pygame.K_DOWN:
                     speed_multiplier = 1.0
-                    print("speed multiplier:", round(speed_multiplier, 2), end="\r")
+                    print("speed multiplier: {}".format(round(speed_multiplier, 2)), end="\r")
 
             # On est obligés de re-créer un nouvel event car le type est différents
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -269,7 +269,7 @@ while isPlaying:
         if pipes.collide(bird, window) == True:
             #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes.y or bird.y > (pipes.y + vertical_space_btw_pipes):
-                print('Collision 1 détéctée', random.randint(0, 99))   
+                print("Collision 1 détéctée {}".format(random.randint(0, 99)))   
                 if collision:
                     gameOver = True
                     saveScore(score)
@@ -282,7 +282,7 @@ while isPlaying:
         if pipes2.collide(bird, window) == True:
             #Si l'oiseau n'est pas dans la séparation verticale des 2 tuyaux
             if bird.y < pipes2.y or bird.y > (pipes2.y + vertical_space_btw_pipes):
-                print('Collision 2 détéctée', random.randint(0, 99))
+                print("Collision 2 détéctée {}".format(random.randint(0, 99)))
                 if collision:
                     gameOver = True
                     saveScore(score)
@@ -301,13 +301,13 @@ while isPlaying:
                 generatePopulation(birdsPopulation)
                 runOnce +=1
             else:
-                print('Nb d\'oiseau : ', len(birdsPopulation), '/', populationNumber)        
+                print("Nb d'oiseau : {}/{}".format(len(birdsPopulation), populationNumber))        
                 
             birdPipes1Distance = pipes.x - bird.x
-            print('DISTANCE OISEAU TUYAU1 =', birdPipes1Distance)  
+            print("DISTANCE OISEAU TUYAU1 = {}".format(birdPipes1Distance))  
             
             birdPipes2Distance = pipes2.x - bird.x
-            print('DISTANCE OISEAU TUYAU2 =', birdPipes2Distance)  
+            print("DISTANCE OISEAU TUYAU2 = {}".format(birdPipes2Distance))  
 
             #Si il reste une population d'oiseau
             if len(birdsPopulation) > 0:
@@ -327,7 +327,7 @@ while isPlaying:
                     #Chaque oiseau saute quand il atteint sa personnalité
                     if(birdPipes1Distance == birdsPopulation[n].pipe1Jump):
                         birdsPopulation[n].jump()
-                        print('l\'oiseau a sauté')
+                        print("l'oiseau a sauté")
                     
                     #Augmente le fitness de chaque oiseau de 0.1 par frame
                     birdsPopulation[n].fitness += 0.1
