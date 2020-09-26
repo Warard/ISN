@@ -1,0 +1,246 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    font-family: 'Noto Serif', serif;
+}
+
+h1
+{
+    color: #FFF;
+    font-size: 5em;
+}
+
+h2
+{
+    text-align: center;
+    font-size: 2em;
+}
+
+p
+{
+    color: #FFF;
+    font-size: 1em;
+}
+
+header > p
+{
+    color: #FFF;
+    
+}
+
+header > h1, p
+{
+    position: relative;
+    bottom: 100px;
+}
+
+header
+{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background-image: url("images/header-background.png");
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+nav
+{
+    z-index: 1;
+    background-color: rgb(0, 0, 0, 0.75);
+    width: 100%;
+    height: 5vh;
+    position: fixed;
+    text-align: center;
+}
+
+nav > ul
+{
+    width: 100%;
+    list-style: none;
+    height: 100%;
+}
+
+nav ul li
+{
+    display: inline;   
+}
+
+nav ul li a 
+{
+    color: #FFF;
+    text-decoration: none;
+    position: relative;
+    top: 0.5vh;
+    padding: 0px 50px 0px 50px;
+    font-size: 3vh;
+}
+
+
+@media screen and (max-width: 500px)
+{
+    nav ul li a
+    {
+        margin: 0 10px 0 10px;
+    }
+
+    #game
+    {
+        background: #0099cc;
+        height: 100vh;
+    }  
+    
+    #game__image
+    {
+        display: none;
+    }
+        
+    #game__text 
+    {
+        margin: 0px 0px 0px 0px;
+        width: 100%;
+        height: 100%;
+        color: rgba(255, 255, 255, 0.75);
+    }
+}
+
+#game
+{
+    background: #0099cc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    border-bottom: 5px solid rgba(0, 0, 0, 0.4);
+}
+
+
+#game__image
+{
+    width: 30%;
+    margin-left: 5%;
+}
+
+#game__image > img
+{
+    border-radius: 5%;
+    width: 85%;
+}
+
+#game__text 
+{
+    width: 60%;
+    margin-right: 5%;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.3em;
+    position: relative;
+    top: 0px;
+}
+
+#download
+{
+    color: #FFF;
+    font-size: 1.5em;
+    background: #65be88;
+    text-align: center;
+    border-bottom: 5px solid grey;
+}
+
+#info
+{
+    text-align: center;
+    height: 50vh;
+}
+
+#info > p
+{
+    position: initial;
+    color: black;
+    margin: 40px 5% 0 5%;
+
+}
+
+footer
+{
+    position: initial;
+    height: 75px;
+    background-color: grey;
+    color: #FFF;
+    border-top: 5px solid rgb(49, 48, 48);
+}
+
+/*Progress bar*/
+#progress_bar
+{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    width: 0%;  /*Width défini par jQuery*/
+    height: 25px;
+    border-radius: 10px;
+    background: rgba(10, 46, 54, 0.85);
+    z-index: 10;
+}
+
+.progress_bar_text
+{
+    color: #FFF;
+    position: absolute;
+    top: -20px;
+    z-index: 3;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+
+/*Progress bar*/
+#progress_bar
+{
+    position: fixed;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    width: 0%;  /*Width défini par jQuery*/
+    height: 25px;
+    border-radius: 10px;
+    background: rgba(10, 46, 54, 0.85);
+    z-index: 10;
+}
+
+.progress_bar_text
+{
+    color: #FFF;
+    position: absolute;
+    top: 50px;
+    z-index: 3;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+    background-color: black;
+}
+
+.center_text
+{
+    text-align: center;
+}
+
+.nav--selected
+{
+    border-bottom: 5px solid green;
+}
+
+#birdHeader
+{
+    position: relative;
+    top: 130px;
+    left: 0px;
+}

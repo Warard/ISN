@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Noto+Serif&family=Oswald&display=swap" rel="stylesheet">
+    <title>Flappy Bird</title>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+    <script>
+        $(document).ready(function()    //On attend que la page soit entièrement chargée avant de lancer le script (évite les bugs pour les utilisateurs à petits débits)
+        {
+            $(window).scroll(function()
+            {
+                var scroll = $(window).scrollTop(), //Récupère la position de défilement de la page où se situe l'utilisateur 
+                doc_height = $(document).height(),  //Retourne la hauteur du document en px
+                window_height = $(window).height();    //Retourne la hauteur de la fenêtre en px
+                scrollPercent = (scroll / (doc_height-window_height)) * 100;   //Convertit la différence de la hauteur du document et de la fenêtre en pourcentage
+
+                $("#birdHeader").css("left", 5*scrollPercent)
+
+                if(scrollPercent <= 50)
+                {
+                    $('#gameLink').addClass("nav--selected")
+                }
+                else
+                {
+                    $('#gameLink').removeClass("nav--selected")
+                }
+                if(scrollPercent > 51 && scrollPercent <= 90)
+                {
+                    $('#downloadLink').addClass("nav--selected")
+                }
+                else
+                {
+                    $('#downloadLink').removeClass("nav--selected")
+                }
+                if(scrollPercent > 91 && scrollPercent <= 100)
+                {
+                    $('#infoLink').addClass("nav--selected")
+                }
+                else
+                {
+                    $('#infoLink').removeClass("nav--selected")
+                }
+            })
+        })
+
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#game" id="gameLink">Le jeu</a></li>
+            <li><a href="#download" id="downloadLink">Télécharger</a></li>
+            <li><a href="#info" id="infoLink">A propos</a></li>
+        </ul>
+    </nav>
+    <header>
+        <img src="images/bird.png" alt="" width="5%" id="birdHeader">
+        <h1>Flappy bird</h1><br>
+        <p>Jouez au mythique jeu Flappy Bird recrée avec Pygame sous Python 3.7</p>
+    </header>
+    <div class="content">
+        <section id="game">
+            <div id="game__image">
+                <img src="images/flappy-bird.jpg" alt="">
+            </div>
+            <p id="game__text">
+                Flappy Bird est un jeu vidéo d'obstacles développé au Viêt Nam à Hanoï par Nguyễn Hà Đông, développeur de jeu indépendant et publié par GEARS Studios. Il est sorti en mai 2013 pour iPhone, puis victime de son succès, rapidement retiré des plateformes de téléchargement. <br><br>Vous incarnez un oiseau, devant passer entre des tuyaux. Vous pouvez ici, en <a href="#download">téléchargeant</a> notre version, vous replonger dans cet univers.
+            </p>
+        </section>
+        <section id="download">
+            <br><h2>Téléchargement</h2><br><br>
+            <p>
+                <ol>
+                    <li>
+                        1 - Télécharger 
+                        <a href="https://www.petit-fichier.fr/2020/04/21/flappy-bird/flappy-bird.rar#dl" target="_blank">flappy bird.rar</a>
+                    </li>
+                    <br>
+                    <li>
+                        2 - Dézipper le contenu dans un dossier à l'aide de <i>Winrar</i> ou <i>7-zip</i><br><br>
+                        <img src="images/CaptureFPR.png" alt="" width="85%">
+                    </li>
+                    <br>                       
+                    <li>
+                        3 - Ouvrir le fichier "Flappy bird" et jouer !<br><br>
+                        <img src="images/fichier.png" alt="" width="50%"><br>
+                    </li>
+                    <br>
+                </ol>
+            </p>
+        </section>
+        <section id="info">   
+            <h2>A propos</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed magna tellus. Proin efficitur augue vitae posuere maximus. Nullam non sapien suscipit, vestibulum neque non, semper ante. Donec ex ante, tempor sit amet convallis nec, ullamcorper ut quam. Donec enim dolor, elementum nec efficitur sed, convallis et velit. Aenean quis consectetur ante. In ac ex maximus, condimentum leo sit amet, congue libero. Sed vel tortor vel leo rhoncus sollicitudin. Donec tempus mauris mi, vitae aliquam magna pretium et.
+            </p>
+        </section>
+        <footer>
+            <!-- <p>
+                Site tous droits réservés © TROUILLE Mathéo<br>
+                Jeu développé par GUIBOUT Clément, ROUCOU Pierre, TROUILLE Mathéo
+            </p> -->
+        </footer>
+    </div>
+</body>
+</html>
